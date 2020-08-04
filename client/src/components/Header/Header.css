@@ -1,0 +1,15 @@
+header {
+  background: #026aa7;
+  max-height: 40px;
+  padding: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: white;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
