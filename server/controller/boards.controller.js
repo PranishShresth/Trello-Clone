@@ -19,7 +19,7 @@ module.exports = {
     try {
       const { user } = req.params;
       const currentuser = await User.findOne({ username: user });
-      await Board.findOne({ createdBy: currentuser && currentuser._id })
+      await Board.find({ createdBy: currentuser && currentuser._id })
         .populate("User")
         .exec(function (err, board) {
           return res.status(200).json(board);

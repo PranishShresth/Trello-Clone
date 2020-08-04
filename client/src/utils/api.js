@@ -3,8 +3,20 @@ import getJwtToken from "./jwt";
 
 const config = {
   headers: {
-    "x-auth-token": getJwtToken(),
+    Authorization: "Bearer " + getJwtToken(),
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
+};
+
+export const getCurrentUser = async (user) => {
+  try {
+    const user = await axios.get(
+      "http://localhost:5000/api/user/profile",
+      config
+    );
+    return user;
+  } catch (err) {}
 };
 export const fetchLoggedUser = async (loginvalues) => {
   try {

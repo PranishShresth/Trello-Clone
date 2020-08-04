@@ -2,6 +2,15 @@ const User = require("./../models/user.model");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  currentUser: async function (req, res, next) {
+    try {
+      const { _id } = req.user;
+      const user = await User.findOne({ _id });
+      return res.status(200).json(user);
+    } catch (err) {
+      return res.status(400).json({ msg: err.message });
+    }
+  },
   login: async function (req, res, next) {
     const { email, password } = req.body;
     const user = await User.findOne({ email });

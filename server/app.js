@@ -28,6 +28,7 @@ app.use(logger("dev"));
 const mongooptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 mongoose.connect("mongodb://localhost:27017/Trello", mongooptions, function (

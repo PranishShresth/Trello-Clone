@@ -8,6 +8,7 @@ const auth = require("../config/auth");
 
 router.post("/user/login", userController.login);
 router.post("/user/register", userController.register);
+router.get("/user/profile", auth, userController.currentUser);
 
 router.post("/board/create", auth, boardsController.createBoard);
 router.get("/board/:user/getAllBoards", auth, boardsController.getAllBoards);
