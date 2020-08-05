@@ -99,3 +99,16 @@ export const addNewCard = async (payload) => {
     console.error(err);
   }
 };
+
+export const addItemToCard = async (payload) => {
+  try {
+    let item = await axios.post(
+      `http://localhost:5000/api/board/card/create`,
+      payload,
+      config
+    );
+    return item;
+  } catch (err) {
+    console.error(err);
+  }
+};

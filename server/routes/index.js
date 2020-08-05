@@ -16,6 +16,9 @@ router.get("/user/profile", auth, userController.currentUser);
 router.post("/board/create", auth, boardsController.createBoard);
 router.get("/board/:user/getAllBoards", auth, boardsController.getAllBoards);
 router.get("/board/:boardName", auth, boardsController.getOneBoard);
+
+//card
+router.post("/board/card/items", auth, cardController.addItemsToCard);
 router.post("/board/card/create", auth, cardController.createCard);
 
 module.exports = router;

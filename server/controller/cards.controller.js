@@ -30,6 +30,22 @@ module.exports = {
   },
   addItemsToCard: async function (req, res, next) {
     try {
+      const { item, cardId } = req.body;
+      const card = await Card.findByIdAndUpdate(
+        cardId,
+        {
+          $push: {
+            items: {
+              item,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      ).exec(function (err, card) {
+        if (!err) return res.status(200).json(card);
+      });
     } catch (err) {
       console.error(err);
     }
