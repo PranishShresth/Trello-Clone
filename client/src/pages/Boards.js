@@ -8,14 +8,16 @@ import Header from "../components/Header/Header";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 function Boards() {
+  let { user, boardName } = useParams();
   const [toggle, setToggle] = useState(false);
+
   const handleButtonToggle = (ev) => {
     setToggle((prevState) => !prevState);
   };
-  handleListNameSubmit = (ev) => {
+
+  const handleListNameSubmit = (ev) => {
     ev.preventDefault();
   };
-  let { user, boardName } = useParams();
   useEffect(() => {
     getBoard(boardName, user);
   }, []);
