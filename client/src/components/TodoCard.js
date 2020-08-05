@@ -7,24 +7,26 @@ import {
   Paper,
   Typography,
   Grid,
+  Box,
 } from "@material-ui/core";
 
 function TodoCard() {
   return (
-    <Card>
+    <Card style={{ backgroundColor: "#ebecf0" }}>
       <CardHeader subheader="Todo" />
       <CardContent>
-        <TextField fullWidth />
-        <Paper square variant="outlined">
-          <Typography variant="body2" color="textSecondary" component="p">
-            Paper
+        <Paper square variant="outlined" style={{ padding: 10, marginTop: 5 }}>
+          <Typography component="div">
+            <Box textAlign="justify">First Todo</Box>
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Paper
+        </Paper>
+        <Paper square variant="outlined" style={{ padding: 10 }}>
+          <Typography component="div">
+            <Box textAlign="justify">First Todo</Box>
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Paper
-          </Typography>
+        </Paper>
+        <Paper square variant="outlined" style={{ padding: 10 }}>
+          <TextField fullWidth label="Add new todo" />
         </Paper>
       </CardContent>
     </Card>

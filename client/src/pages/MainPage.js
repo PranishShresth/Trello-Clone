@@ -72,7 +72,7 @@ function MainPage({ login, getAllBoards, boards }) {
                 <Grid key={board._id} item md={2} className={classes.gridItems}>
                   <Paper elevation={3} className={classes.paper}>
                     <Link
-                      to=""
+                      to={`/boards/${board.name}`}
                       style={{
                         position: "absolute",
                         top: 0,
@@ -82,7 +82,8 @@ function MainPage({ login, getAllBoards, boards }) {
                         width: "100%",
                         height: "100%",
                       }}
-                    ></Link>
+                      replace
+                    />
                     {board.name}
                   </Paper>
                 </Grid>
