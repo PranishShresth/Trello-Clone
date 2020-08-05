@@ -19,7 +19,7 @@ export const loginReducer = (state = initialState, action) => {
       const error = action.payload;
       return { ...state, error };
     case USER.LOGOUT_USER:
-      localStorage.removeItem("jwt-Token");
+      localStorage.removeItem("jwt-token");
       return { ...state, user: {}, isLoggedIn: false };
 
     default:

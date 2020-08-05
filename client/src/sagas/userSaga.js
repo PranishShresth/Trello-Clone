@@ -1,6 +1,6 @@
 import { fork, call, put, takeLatest } from "redux-saga/effects";
 import { push } from "connected-react-router";
-import { fetchLoggedUser, RegisterUser } from "../utils/api";
+import { fetchLoggedUser, RegisterUser, getCurrentUser } from "../utils/api";
 import {
   setUser,
   setUserError,
@@ -9,14 +9,21 @@ import {
 } from "../actions/index";
 import { USER } from "../constants";
 
+function* fetchCurrentUser(action) {
+  try {
+    const {
+      data: { user },
+    } = yield call(fetchCurrentUser, action.payload);
+    yield put(setUser(user));
+  } catch (err) {}
+}
 function* LoginUser(action) {
   try {
     const { data, status } = yield call(fetchLoggedUser, action.payload);
     switch (status) {
       case 200:
-        yield put(setUser(data.user));
         localStorage.setItem("jwt-token", data.token);
-        console.log(data);
+        yield put(setUser(data.user));
         yield put(push(`/home/${data.user.name}`));
         break;
       case 403:
@@ -34,6 +41,7 @@ function* LoginUser(action) {
 
 function* userSaga() {
   yield takeLatest(USER.LOGIN_USER, LoginUser);
+  yield takeLatest(USER.LOGIN_USER, fetchCurrentUser);
 }
 
 export default userSaga;

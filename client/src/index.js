@@ -16,12 +16,16 @@ const store = createStore(
   rootReducer(history),
   compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION__({
+        serialize: true,
+        trace: true,
+      })
   )
 );
 
 sagaMiddleware.run(rootSaga);
-
+console.log(store.getState());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

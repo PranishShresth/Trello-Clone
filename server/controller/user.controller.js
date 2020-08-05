@@ -4,9 +4,15 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   currentUser: async function (req, res, next) {
     try {
-      const { _id } = req.user;
-      const user = await User.findOne({ _id });
-      return res.status(200).json(user);
+      const { id } = req.user;
+      const user = await User.findOne({ _id: id });
+      return res.status(200).json({
+        user: {
+          _id: user._id,
+          email: user.email,
+          name: user.username,
+        },
+      });
     } catch (err) {
       return res.status(400).json({ msg: err.message });
     }
@@ -17,11 +23,9 @@ module.exports = {
     if (user) {
       if (user.password === password) {
         res.setHeader("Content-Type", "application/json");
-        let token = jwt.sign(
-          { username: user.username },
-          process.env.TOKEN_SECRET,
-          { expiresIn: 129600 }
-        );
+        let token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+          expiresIn: 129600,
+        });
         return res.status(200).json({
           user: {
             _id: user._id,

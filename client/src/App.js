@@ -1,33 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Registration from "./pages/Registration";
 import MainPage from "./pages/MainPage";
-import { setUser, LogOutUser } from "./actions/index";
+import { setUser } from "./actions/index";
 import Boards from "./pages/Boards";
 import { connect } from "react-redux";
 import PrivateRoute from "./components/PrivateRoute";
 import { getCurrentUser } from "./utils/api";
 import Header from "./components/Header/Header";
 
-function App({ setCurrentUser, isLoggedIn, LogOutUser, login }) {
-  useState(async () => {
-    const { user } = await getCurrentUser();
-    setCurrentUser(user);
+function App({ setCurrentUser, currentUser, location }) {
+  async function persistLogin() {
+    const {
+      data: { user },
+      status,
+    } = await getCurrentUser();
+    if (status === 200) {
+      await setCurrentUser(user);
+    }
+  }
+  useEffect(() => {
+    persistLogin();
   }, []);
   return (
     <Switch>
       <Route exact path="/" render={() => <Registration />} />
       <>
-        <Header logOut={LogOutUser} />
-
-        <PrivateRoute
-          exact
-          path="/home/:user"
-          isLoggedIn
-          component={MainPage}
-        />
-        <Route exact path="/boards/:boardName" isLoggedIn component={Boards} />
+        <PrivateRoute exact path="/home/:user" component={MainPage} />
+        <PrivateRoute exact path="/boards/:boardName" component={Boards} />
       </>
     </Switch>
   );
@@ -35,10 +36,9 @@ function App({ setCurrentUser, isLoggedIn, LogOutUser, login }) {
 
 const MapDispatchToProps = (dispatch) => ({
   setCurrentUser: (payload) => dispatch(setUser(payload)),
-  LogOutUser: () => dispatch(LogOutUser()),
 });
-const mapStateToProps = ({ login }) => ({
-  isLoggedIn: login.isLoggedIn,
-  login: login,
+const mapStateToProps = ({ login, router }) => ({
+  currentUser: login,
+  location: router.location.pathname,
 });
 export default connect(mapStateToProps, MapDispatchToProps)(App);
