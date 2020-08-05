@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 
 function PrivateRoute({ component: Component, isLoggedIn, ...props }) {
   const token = localStorage.getItem("jwt-token");
+  console.log(isLoggedIn);
   return (
     <Route
       {...props}
       render={(props) =>
-        token ? (
+        isLoggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: `/`, state: { from: props.location } }} />

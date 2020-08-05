@@ -27,10 +27,7 @@ function CreateBoard({ login }) {
 
   const handleBoardSubmit = async (ev) => {
     ev.preventDefault();
-    const id = login && login.user._id;
-    const body = { boardName, id };
-    console.log(body);
-    const resp = await CreateNewBoard(body);
+    await CreateNewBoard({ boardName });
   };
   return (
     <>

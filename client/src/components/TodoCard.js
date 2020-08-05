@@ -10,14 +10,14 @@ import {
   Box,
 } from "@material-ui/core";
 
-function TodoCard() {
+function TodoCard({ cardName }) {
   return (
     <Card style={{ backgroundColor: "#ebecf0" }}>
       <CardHeader subheader="Todo" />
       <CardContent>
         <Paper square variant="outlined" style={{ padding: 10, marginTop: 5 }}>
           <Typography component="div">
-            <Box textAlign="justify">First Todo</Box>
+            <Box textAlign="justify">First Todo :{cardName}</Box>
           </Typography>
         </Paper>
         <Paper square variant="outlined" style={{ padding: 10 }}>

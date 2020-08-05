@@ -60,11 +60,10 @@ export const CreateNewBoard = async (payload) => {
   }
 };
 
-export const getBoard = async (boardName, payload) => {
+export const getOneBoard = async (boardName) => {
   try {
-    let board = await axios.post(
+    let board = await axios.get(
       `http://localhost:5000/api/board/${boardName}`,
-      payload,
       config
     );
     return board;
@@ -73,10 +72,30 @@ export const getBoard = async (boardName, payload) => {
 
 export const getAllBoards = async (payload) => {
   try {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
     let board = await axios.get(
       `http://localhost:5000/api/board/${payload}/getAllBoards`,
       config
     );
     return board;
   } catch (err) {}
+};
+
+export const addNewCard = async (payload) => {
+  try {
+    let card = await axios.post(
+      `http://localhost:5000/api/board/card/create`,
+      payload,
+      config
+    );
+    return card;
+  } catch (err) {
+    console.error(err);
+  }
 };

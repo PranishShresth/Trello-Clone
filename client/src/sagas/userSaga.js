@@ -1,5 +1,5 @@
-import { fork, call, put, takeLatest } from "redux-saga/effects";
-import { push } from "connected-react-router";
+import { fork, call, put, takeLatest, delay } from "redux-saga/effects";
+import { push, replace } from "connected-react-router";
 import { fetchLoggedUser, RegisterUser, getCurrentUser } from "../utils/api";
 import {
   setUser,
@@ -13,9 +13,12 @@ function* fetchCurrentUser(action) {
   try {
     const {
       data: { user },
-    } = yield call(fetchCurrentUser, action.payload);
+    } = yield call(getCurrentUser, action.payload);
     yield put(setUser(user));
-  } catch (err) {}
+    yield put(replace(`/home/${user.name}`));
+  } catch (err) {
+    console.log(err);
+  }
 }
 function* LoginUser(action) {
   try {
@@ -41,7 +44,7 @@ function* LoginUser(action) {
 
 function* userSaga() {
   yield takeLatest(USER.LOGIN_USER, LoginUser);
-  yield takeLatest(USER.LOGIN_USER, fetchCurrentUser);
+  yield takeLatest(USER.FETCH_CURRENT_USER, fetchCurrentUser);
 }
 
 export default userSaga;

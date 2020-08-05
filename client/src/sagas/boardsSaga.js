@@ -7,7 +7,6 @@ import { BOARDS } from "../constants";
 function* callGetAllBoards(action) {
   try {
     const boards = yield call(getAllBoards, action.payload);
-    console.log(boards);
     yield put(setGetBoardsSuccess(boards.data));
   } catch (err) {
     console.log(err);

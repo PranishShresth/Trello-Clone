@@ -1,41 +1,50 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter, useHistory } from "react-router-dom";
 import Registration from "./pages/Registration";
+import AppContainer from "./components/AppContainer";
 import MainPage from "./pages/MainPage";
-import { setUser } from "./actions/index";
+import { fetchCurrentUser } from "./actions/index";
 import Boards from "./pages/Boards";
 import { connect } from "react-redux";
 import PrivateRoute from "./components/PrivateRoute";
 import { getCurrentUser } from "./utils/api";
 import Header from "./components/Header/Header";
 
-function App({ setCurrentUser, currentUser, location }) {
-  async function persistLogin() {
-    const {
-      data: { user },
-      status,
-    } = await getCurrentUser();
-    if (status === 200) {
-      await setCurrentUser(user);
-    }
-  }
-  useEffect(() => {
-    persistLogin();
-  }, []);
+function App({ setCurrentUser, currentUser, location, fetchCurrentUser }) {
+  const history = useHistory();
+  // async function persistLogin() {
+  //   const {
+  //     data: { user },
+  //     status,
+  //   } = await getCurrentUser();
+  //   if (status === 200) {
+  //     await setCurrentUser(user);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt-token");
+  //   if (jwt) {
+  //     fetchCurrentUser();
+  //     history.push(`home/${currentUser.user.name}`);
+  //   }
+  //   console.log(currentUser);
+  // }, []);
   return (
     <Switch>
       <Route exact path="/" render={() => <Registration />} />
-      <>
-        <PrivateRoute exact path="/home/:user" component={MainPage} />
-        <PrivateRoute exact path="/boards/:boardName" component={Boards} />
-      </>
+
+      <AppContainer>
+        <Route path="/home/:user" component={MainPage} />
+        <Route path="/boards/:boardName" component={Boards} />
+      </AppContainer>
     </Switch>
   );
 }
 
 const MapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (payload) => dispatch(setUser(payload)),
+  fetchCurrentUser: () => dispatch(fetchCurrentUser()),
 });
 const mapStateToProps = ({ login, router }) => ({
   currentUser: login,

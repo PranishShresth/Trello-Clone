@@ -8,19 +8,29 @@ const initialState = {
 };
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
+    case USER.LOGIN_USER:
+      return Object.assign({}, state, {
+        ...state,
+      });
     case USER.LOGIN_USER_SUCCESS:
-      return {
+      return Object.assign({}, state, {
         ...state,
         isLoggedIn: true,
         isLoading: false,
         user: action.payload,
-      };
+      });
     case USER.LOGIN_USER_ERROR:
-      const error = action.payload;
-      return { ...state, error };
+      return Object.assign({}, state, {
+        ...state,
+        error: "LOGIN ERROR",
+      });
     case USER.LOGOUT_USER:
       localStorage.removeItem("jwt-token");
-      return { ...state, user: {}, isLoggedIn: false };
+      return Object.assign({}, state, {
+        ...state,
+        user: {},
+        isLoggedIn: false,
+      });
 
     default:
       return state;

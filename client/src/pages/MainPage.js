@@ -53,8 +53,9 @@ function MainPage({ login, getAllBoards, boards }) {
 
   useEffect(() => {
     getAllBoards(user);
-    console.log(boards);
   }, []);
+  console.log(boards);
+
   return (
     <>
       <Header />
@@ -69,10 +70,19 @@ function MainPage({ login, getAllBoards, boards }) {
           <Grid container spacing={2}>
             {boards.map((board) => {
               return (
-                <Grid key={board._id} item md={2} className={classes.gridItems}>
+                <Grid
+                  key={board._id}
+                  item
+                  md={2}
+                  sm={6}
+                  xs={10}
+                  className={classes.gridItems}
+                >
                   <Paper elevation={3} className={classes.paper}>
                     <Link
-                      to={`/boards/${board.name}`}
+                      to={{
+                        pathname: `/boards/${board.name}`,
+                      }}
                       style={{
                         position: "absolute",
                         top: 0,
@@ -107,7 +117,7 @@ function MainPage({ login, getAllBoards, boards }) {
               </Paper>
             </Grid> */}
 
-            <Grid item md={2} className={classes.gridItems}>
+            <Grid item md={2} sm={6} xs={10} className={classes.gridItems}>
               <CreateBoard />
             </Grid>
           </Grid>

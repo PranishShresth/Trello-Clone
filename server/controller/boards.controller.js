@@ -3,7 +3,8 @@ const User = require("../models/user.model");
 
 module.exports = {
   createBoard: async function (req, res, next) {
-    const { boardName, id } = req.body;
+    const { id } = req.user;
+    const { boardName } = req.body;
     try {
       const newBoard = new Board({
         name: boardName,
@@ -17,23 +18,23 @@ module.exports = {
   },
   getAllBoards: async function (req, res, next) {
     try {
-      const { user } = req.params;
-      const currentuser = await User.findOne({ username: user });
-      await Board.find({ createdBy: currentuser && currentuser._id })
+      const { id } = req.user;
+      await Board.find({ createdBy: id })
         .populate("User")
         .exec(function (err, board) {
           return res.status(200).json(board);
         });
     } catch (err) {
-      if (err) throw err;
+      return res.status(400).json({ msg: err.message });
     }
   },
 
   getOneBoard: async function (req, res, next) {
-    const { user, boardName } = req.params;
     try {
-      const board = await Board.findOne({ createdBy: user, name: boardName });
-      await res.status(200).json(board);
+      const { boardName } = req.params;
+      const { id } = req.user;
+      const board = await Board.findOne({ createdBy: id, name: boardName });
+      return res.status(200).json(board);
     } catch (err) {
       console.log(err);
     }

@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getBoard } from "../utils/api";
+import { getOneBoard } from "../utils/api";
 import TodoCard from "../components/TodoCard";
 import { Grid, IconButton, Button, TextField, Paper } from "@material-ui/core";
 import Header from "../components/Header/Header";
-
+import { connect } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
-function Boards() {
-  let { user, boardName } = useParams();
+import { addNewCard } from "../utils/api";
+
+function Boards({ login }) {
+  const [cardName, setCardName] = useState("");
+  let { boardName } = useParams();
+  const [cards, setCards] = useState([{}]);
   const [toggle, setToggle] = useState(false);
 
   const handleButtonToggle = (ev) => {
     setToggle((prevState) => !prevState);
   };
 
-  const handleListNameSubmit = (ev) => {
+  const handleInputChange = (ev) => {
+    setCardName(ev.target.value);
+  };
+  const handleCardNameSubmit = async (ev) => {
     ev.preventDefault();
+    await addNewCard({ boardName: boardName, name: cardName });
   };
   useEffect(() => {
-    getBoard(boardName, user);
+    getOneBoard(boardName).then((res) => setCards(res.data.cards));
   }, []);
   return (
     <section
@@ -27,8 +35,13 @@ function Boards() {
       style={{ backgroundColor: "rgb(75, 191, 107)", height: "100%" }}
     >
       <Header />
+
       <Grid container spacing={1}>
         <Grid item md={3}>
+          {/* {cards &&
+            cards.map((x) => {
+              return <TodoCard cardName={x.name} />;
+            })} */}
           <TodoCard />
         </Grid>
         <Grid item md={2}>
@@ -43,13 +56,18 @@ function Boards() {
             </Button>
           ) : (
             <Paper style={{ backgroundColor: "#ebecf0", padding: 10 }}>
-              <form>
+              <form onSubmit={handleCardNameSubmit}>
                 <TextField
                   placeholder="Enter a list name"
                   variant="outlined"
                   fullWidth
+                  value={cardName}
+                  onChange={handleInputChange}
                 />
-                <Button style={{ backgroundColor: "#5aac44", color: "#fff" }}>
+                <Button
+                  type="submit"
+                  style={{ backgroundColor: "#5aac44", color: "#fff" }}
+                >
                   Add
                 </Button>
                 <IconButton onClick={handleButtonToggle}>
@@ -64,4 +82,7 @@ function Boards() {
   );
 }
 
-export default Boards;
+const mapStateToProps = ({ login }) => ({
+  login,
+});
+export default connect(mapStateToProps, null)(Boards);

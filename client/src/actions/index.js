@@ -13,20 +13,24 @@ export const setUserError = (error) => ({
   payload: error,
 });
 
-export const RegisterUser = (user) => ({
-  type: USER.REGISTER_USER,
-  payload: { ...user },
+export const fetchCurrentUser = () => ({
+  type: USER.FETCH_CURRENT_USER,
 });
 
-export const setRegisterSuccess = (bool) => ({
-  type: USER.REGISTER_USER_SUCCESS,
-  success: bool,
-});
+// export const RegisterUser = (user) => ({
+//   type: USER.REGISTER_USER,
+//   payload: { ...user },
+// });
 
-export const setRegisterError = (bool) => ({
-  type: USER.REGISTER_USER_ERROR,
-  error: bool,
-});
+// export const setRegisterSuccess = (bool) => ({
+//   type: USER.REGISTER_USER_SUCCESS,
+//   success: bool,
+// });
+
+// export const setRegisterError = (bool) => ({
+//   type: USER.REGISTER_USER_ERROR,
+//   error: bool,
+// });
 
 export const LogOutUser = () => ({
   type: USER.LOGOUT_USER,
