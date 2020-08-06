@@ -28,6 +28,52 @@ module.exports = {
       console.error(err);
     }
   },
+  reorderCards: async function (req, res, next) {
+    try {
+      const { id } = req.user;
+      const { source, destination, itemId } = req.body;
+      // const dest = await Card.findById(droppableId);
+      const item = await Card.findOne(
+        {
+          _id: source,
+          "items._id": itemId,
+        },
+        { "items.$": 1 }
+      );
+      await Card.findByIdAndUpdate(
+        destination,
+        {
+          $push: {
+            items: {
+              item: item.items[0].item,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      ).exec(async (err, card) => {
+        if (!err) {
+          await Card.findByIdAndUpdate(
+            source,
+            {
+              $pull: {
+                items: {
+                  _id: itemId,
+                },
+              },
+            },
+            { safe: true, upsert: true }
+          );
+
+          return res.status(200).json(card);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   addItemsToCard: async function (req, res, next) {
     try {
       const { item, cardId } = req.body;

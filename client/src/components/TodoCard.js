@@ -45,13 +45,10 @@ function TodoCard({ card, updateBoards }) {
   const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: "none",
-    padding: 10 * 2,
-
-    transform: isDragging ? "rotate(20deg)" : "",
-    margin: `0 0 ${10}px 0`,
-
+    transform: isDragging ? "rotate(20deg)" : "rotate(100deg)",
+    color: isDragging ? "red" : "black",
     // change background colour if dragging
-    background: isDragging ? "red" : "grey",
+    // background: isDragging ? "red" : "grey",
 
     // styles we need to apply on draggables
     ...draggableStyle,

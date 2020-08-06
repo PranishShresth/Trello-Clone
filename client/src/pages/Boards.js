@@ -53,7 +53,29 @@ function Boards({ login }) {
     await addNewCard({ boardName: boardName, name: cardName });
     await getSpecificBoard();
   };
-  const onDragEnd = (result) => {};
+  const onDragEnd = async (result) => {
+    const { destination, draggableId, source } = result;
+    if (!destination) return;
+
+    const config = {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    console.log(result);
+    await axios.put(
+      "http://localhost:5000/api/board/card/reorder",
+      {
+        destination: destination.droppableId,
+        itemId: draggableId,
+        source: source.droppableId,
+      },
+      config
+    );
+    await getSpecificBoard();
+  };
 
   return (
     <section

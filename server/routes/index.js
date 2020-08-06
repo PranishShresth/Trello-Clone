@@ -20,5 +20,6 @@ router.get("/board/:boardName", auth, boardsController.getOneBoard);
 //card
 router.post("/board/card/items", auth, cardController.addItemsToCard);
 router.post("/board/card/create", auth, cardController.createCard);
+router.put("/board/card/reorder", auth, cardController.reorderCards);
 
 module.exports = router;
