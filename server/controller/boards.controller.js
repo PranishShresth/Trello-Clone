@@ -33,10 +33,17 @@ module.exports = {
     try {
       const { boardName } = req.params;
       const { id } = req.user;
-      const board = await Board.findOne({ createdBy: id, name: boardName });
-      return res.status(200).json(board);
+      const board = await Board.findOne({ createdBy: id, name: boardName })
+        .populate({
+          path: "cards",
+          model: "Card",
+        })
+        .exec((err, board) => {
+          if (err) return res.status(400).json({ msg: err.message });
+          return res.status(200).json(board);
+        });
     } catch (err) {
-      console.log(err);
+      if (err) return res.status(400).json({ msg: err.message });
     }
   },
 };

@@ -6,6 +6,8 @@ import SignUp from "./../components/Signup";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function a11yProps(def) {
   return {
@@ -41,12 +43,15 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
 }));
-function Registration() {
+function Registration({ login, location }) {
   const classes = useStyles();
+  const history = useHistory();
   const [value, setValue] = React.useState(0);
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt-token");
-    if (jwt) {
+    if (login.isLoggedIn) {
+      history.push(`/home/${login.user.name}`, {
+        from: location,
+      });
     }
   });
 
@@ -79,4 +84,9 @@ function Registration() {
   );
 }
 
-export default Registration;
+const mapStateToProps = ({ login }) => {
+  return {
+    login,
+  };
+};
+export default connect(mapStateToProps, null)(Registration);

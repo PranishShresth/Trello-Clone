@@ -26,7 +26,6 @@ function Login({ loginUser, login }) {
             Log in
           </Box>
         </Typography>
-        {!login.isLoading && <div>Loading....</div>}
         <Grid item xs={12}>
           <TextField
             value={loginValues.email}

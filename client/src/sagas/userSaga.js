@@ -15,7 +15,7 @@ function* fetchCurrentUser(action) {
       data: { user },
     } = yield call(getCurrentUser, action.payload);
     yield put(setUser(user));
-    yield put(push(`/home/${user.name}`));
+    // yield put(push(`/home/${user.name}`));
   } catch (err) {
     console.log(err);
   }
@@ -27,7 +27,7 @@ function* LoginUser(action) {
       case 200:
         localStorage.setItem("jwt-token", data.token);
         yield put(setUser(data.user));
-        yield put(push(`/home/${data.user.name}`));
+        // yield put(push(`/home/${data.user.name}`));
         break;
       case 403:
         yield put(setUserError("Login Failed. Please Try Again"));

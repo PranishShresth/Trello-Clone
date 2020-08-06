@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainPage({ login, getAllBoards, boards }) {
+function MainPage({ login, getAllBoards, boards, location }) {
   const { user } = useParams();
   const classes = useStyles();
 
@@ -82,6 +82,7 @@ function MainPage({ login, getAllBoards, boards }) {
                     <Link
                       to={{
                         pathname: `/boards/${board.name}`,
+                        state: { from: location },
                       }}
                       style={{
                         position: "absolute",
@@ -99,26 +100,9 @@ function MainPage({ login, getAllBoards, boards }) {
                 </Grid>
               );
             })}
-            {/* <Grid item md={2} className={classes.gridItems}>
-              <Paper elevation={3} className={classes.paper}>
-                <Link
-                  to="/"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                ></Link>
-                My Board
-              </Paper>
-            </Grid> */}
 
             <Grid item md={2} sm={6} xs={10} className={classes.gridItems}>
-              <CreateBoard />
+              <CreateBoard getAllBoards={getAllBoards} />
             </Grid>
           </Grid>
         </div>

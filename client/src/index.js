@@ -7,6 +7,7 @@ import rootReducer from "./reducers/rootReducer";
 import { Provider } from "react-redux";
 import rootSaga from "./sagas/rootSaga";
 import { createBrowserHistory } from "history";
+import { BrowserRouter as Router, BrowserRouter } from "react-router-dom";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -28,9 +29,11 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      {/* <Router> */}
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>
+      {/* </Router> */}
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

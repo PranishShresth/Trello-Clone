@@ -3,8 +3,6 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 function PrivateRoute({ component: Component, isLoggedIn, ...props }) {
-  const token = localStorage.getItem("jwt-token");
-  console.log(isLoggedIn);
   return (
     <Route
       {...props}

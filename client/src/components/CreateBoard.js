@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import "./CreateBoard.css";
 import CloseIcon from "@material-ui/icons/Close";
 
-function CreateBoard({ login }) {
+function CreateBoard({ login, getAllBoards }) {
   const [openBoard, setOpenBoard] = useState(false);
   const [boardName, setBoardName] = useState("");
 
@@ -24,10 +24,12 @@ function CreateBoard({ login }) {
   const handleBoardNameChange = (ev) => {
     setBoardName(ev.target.value);
   };
+  console.log(login.user.name);
 
   const handleBoardSubmit = async (ev) => {
     ev.preventDefault();
     await CreateNewBoard({ boardName });
+    await getAllBoards(login.user.name);
   };
   return (
     <>

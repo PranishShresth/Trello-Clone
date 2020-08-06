@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getOneBoard } from "../utils/api";
+import getJwtToken from "../utils/jwt";
 import TodoCard from "../components/TodoCard";
 import { Grid, IconButton, Button, TextField, Paper } from "@material-ui/core";
 import Header from "../components/Header/Header";
@@ -8,6 +9,7 @@ import { connect } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import { addNewCard } from "../utils/api";
+import axios from "axios";
 
 function Boards({ login }) {
   const [cardName, setCardName] = useState("");
@@ -19,16 +21,38 @@ function Boards({ login }) {
     setToggle((prevState) => !prevState);
   };
 
+  //when the component first mounts
+  async function getSpecificBoard() {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    let board = await axios.get(
+      `http://localhost:5000/api/board/${boardName}`,
+      config
+    );
+    const cards = await board.data;
+    setCards(cards.cards);
+  }
+  useEffect(() => {
+    getSpecificBoard();
+  }, []); //fires when cards changes
+
+  //handling input change
   const handleInputChange = (ev) => {
     setCardName(ev.target.value);
   };
+
+  //handling submit
   const handleCardNameSubmit = async (ev) => {
     ev.preventDefault();
     await addNewCard({ boardName: boardName, name: cardName });
+    await getSpecificBoard();
   };
-  useEffect(() => {
-    getOneBoard(boardName).then((res) => setCards(res.data.cards));
-  }, []);
+
   return (
     <section
       className="boards"
@@ -36,14 +60,15 @@ function Boards({ login }) {
     >
       <Header />
 
-      <Grid container spacing={1}>
-        <Grid item md={3}>
-          {/* {cards &&
-            cards.map((x) => {
-              return <TodoCard cardName={x.name} />;
-            })} */}
-          <TodoCard />
-        </Grid>
+      <Grid container spacing={1} style={{ padding: 10 }}>
+        {cards &&
+          cards.map((x) => {
+            return (
+              <Grid key={x._id} item md={3}>
+                <TodoCard updateBoards={getSpecificBoard} card={x} />
+              </Grid>
+            );
+          })}
         <Grid item md={2}>
           {!toggle ? (
             <Button

@@ -18,7 +18,6 @@ function App({ currentUser, fetchCurrentUser }) {
     const jwt = localStorage.getItem("jwt-token");
     if (jwt) {
       fetchCurrentUser();
-      history.push(`home/${currentUser.user.name}`);
     }
     console.log(currentUser);
   }, []);
