@@ -25,7 +25,6 @@ const store = createStore(
 );
 
 sagaMiddleware.run(rootSaga);
-console.log(store.getState());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

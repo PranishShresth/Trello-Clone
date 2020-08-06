@@ -11,34 +11,23 @@ import PrivateRoute from "./components/PrivateRoute";
 import { getCurrentUser } from "./utils/api";
 import Header from "./components/Header/Header";
 
-function App({ setCurrentUser, currentUser, location, fetchCurrentUser }) {
+function App({ currentUser, fetchCurrentUser }) {
   const history = useHistory();
-  // async function persistLogin() {
-  //   const {
-  //     data: { user },
-  //     status,
-  //   } = await getCurrentUser();
-  //   if (status === 200) {
-  //     await setCurrentUser(user);
-  //   }
-  // }
 
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt-token");
-  //   if (jwt) {
-  //     fetchCurrentUser();
-  //     history.push(`home/${currentUser.user.name}`);
-  //   }
-  //   console.log(currentUser);
-  // }, []);
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt-token");
+    if (jwt) {
+      fetchCurrentUser();
+      history.push(`home/${currentUser.user.name}`);
+    }
+    console.log(currentUser);
+  }, []);
   return (
     <Switch>
       <Route exact path="/" render={() => <Registration />} />
 
-      <AppContainer>
-        <Route path="/home/:user" component={MainPage} />
-        <Route path="/boards/:boardName" component={Boards} />
-      </AppContainer>
+      <PrivateRoute path="/home/:user" component={MainPage} />
+      <PrivateRoute path="/boards/:boardName" component={Boards} />
     </Switch>
   );
 }

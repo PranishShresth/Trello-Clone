@@ -15,7 +15,7 @@ function* fetchCurrentUser(action) {
       data: { user },
     } = yield call(getCurrentUser, action.payload);
     yield put(setUser(user));
-    yield put(replace(`/home/${user.name}`));
+    yield put(push(`/home/${user.name}`));
   } catch (err) {
     console.log(err);
   }

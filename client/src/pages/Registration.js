@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
 function Registration() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt-token");
+    if (jwt) {
+    }
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
