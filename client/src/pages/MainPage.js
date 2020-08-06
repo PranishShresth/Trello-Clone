@@ -53,8 +53,8 @@ function MainPage({ login, getAllBoards, boards, location }) {
 
   useEffect(() => {
     getAllBoards(user);
+    console.log(location);
   }, []);
-  console.log(boards);
 
   return (
     <>
@@ -82,7 +82,7 @@ function MainPage({ login, getAllBoards, boards, location }) {
                     <Link
                       to={{
                         pathname: `/boards/${board.name}`,
-                        state: { from: location },
+                        state: { from: location.pathname },
                       }}
                       style={{
                         position: "absolute",
@@ -93,7 +93,6 @@ function MainPage({ login, getAllBoards, boards, location }) {
                         width: "100%",
                         height: "100%",
                       }}
-                      replace
                     />
                     {board.name}
                   </Paper>
@@ -110,9 +109,10 @@ function MainPage({ login, getAllBoards, boards, location }) {
     </>
   );
 }
-const mapStateToProps = ({ login, boards }) => ({
+const mapStateToProps = ({ login, boards, router }) => ({
   login,
   boards: boards.boards,
+  location: router,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllBoards: (payload) => {

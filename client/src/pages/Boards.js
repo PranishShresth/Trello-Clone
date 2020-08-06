@@ -92,7 +92,7 @@ function Boards({ login }) {
           {cards &&
             cards.map((x) => {
               return (
-                <Grid key={x._id} item md={3}>
+                <Grid key={`${x._id}`} item>
                   <TodoCard updateBoards={getSpecificBoard} card={x} />
                 </Grid>
               );

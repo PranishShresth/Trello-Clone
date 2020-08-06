@@ -43,15 +43,14 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
 }));
-function Registration({ login, location }) {
+function Registration({ login }, ...props) {
   const classes = useStyles();
   const history = useHistory();
   const [value, setValue] = React.useState(0);
   React.useEffect(() => {
+    console.log(login);
     if (login.isLoggedIn) {
-      history.push(`/home/${login.user.name}`, {
-        from: location,
-      });
+      history.push(`/home/${login.user.name}`);
     }
   });
 

@@ -19,14 +19,13 @@ function App({ currentUser, fetchCurrentUser }) {
     if (jwt) {
       fetchCurrentUser();
     }
-    console.log(currentUser);
   }, []);
   return (
     <Switch>
       <Route exact path="/" render={() => <Registration />} />
 
-      <PrivateRoute path="/home/:user" component={MainPage} />
-      <PrivateRoute path="/boards/:boardName" component={Boards} />
+      <PrivateRoute exact path="/home/:user" component={MainPage} />
+      <PrivateRoute exact path="/boards/:boardName" component={Boards} />
     </Switch>
   );
 }
@@ -34,8 +33,7 @@ function App({ currentUser, fetchCurrentUser }) {
 const MapDispatchToProps = (dispatch) => ({
   fetchCurrentUser: () => dispatch(fetchCurrentUser()),
 });
-const mapStateToProps = ({ login, router }) => ({
+const mapStateToProps = ({ login }) => ({
   currentUser: login,
-  location: router.location.pathname,
 });
 export default connect(mapStateToProps, MapDispatchToProps)(App);
