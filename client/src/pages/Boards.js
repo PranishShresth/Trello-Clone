@@ -10,6 +10,7 @@ import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import { addNewCard } from "../utils/api";
 import axios from "axios";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function Boards({ login }) {
   const [cardName, setCardName] = useState("");
@@ -52,23 +53,30 @@ function Boards({ login }) {
     await addNewCard({ boardName: boardName, name: cardName });
     await getSpecificBoard();
   };
+  const onDragEnd = (result) => {};
 
   return (
     <section
       className="boards"
-      style={{ backgroundColor: "rgb(75, 191, 107)", height: "100%" }}
+      style={{
+        backgroundColor: "rgb(75, 191, 107)",
+        minHeight: "100%",
+        height: "auto",
+      }}
     >
       <Header />
-
       <Grid container spacing={1} style={{ padding: 10 }}>
-        {cards &&
-          cards.map((x) => {
-            return (
-              <Grid key={x._id} item md={3}>
-                <TodoCard updateBoards={getSpecificBoard} card={x} />
-              </Grid>
-            );
-          })}
+        <DragDropContext onDragEnd={onDragEnd}>
+          {cards &&
+            cards.map((x) => {
+              return (
+                <Grid key={x._id} item md={3}>
+                  <TodoCard updateBoards={getSpecificBoard} card={x} />
+                </Grid>
+              );
+            })}
+        </DragDropContext>
+
         <Grid item md={2}>
           {!toggle ? (
             <Button

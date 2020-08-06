@@ -10,6 +10,7 @@ import {
   Button,
   Box,
 } from "@material-ui/core";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
 
@@ -39,43 +40,87 @@ function TodoCard({ card, updateBoards }) {
       config
     );
     await updateBoards();
+    setTodo("");
   };
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: "none",
+    padding: 10 * 2,
+
+    transform: isDragging ? "rotate(20deg)" : "",
+    margin: `0 0 ${10}px 0`,
+
+    // change background colour if dragging
+    background: isDragging ? "red" : "grey",
+
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+  const getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? "lightblue" : "lightgrey",
+    padding: 20,
+  });
 
   return (
     <Card style={{ backgroundColor: "#ebecf0" }}>
       <CardHeader subheader={card.name} />
-      <CardContent>
-        {card.items &&
-          card.items.map((item) => {
-            return (
-              <Paper
-                key={item._id}
-                square
-                variant="outlined"
-                style={{ padding: 10 }}
-              >
-                <Typography component="div">
-                  <Box textAlign="justify">{item.item}</Box>
-                </Typography>
-              </Paper>
-            );
-          })}
+      <Droppable droppableId={`${card._id}`}>
+        {(provided) => (
+          <CardContent
+            {...provided.droppableProps}
+            innerRef={provided.innerRef}
+          >
+            {card.items &&
+              card.items.map((item, i) => {
+                return (
+                  <Draggable
+                    draggableId={`${item._id}`}
+                    key={`${item._id}`}
+                    index={i}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                        <Paper
+                          square
+                          variant="outlined"
+                          style={{ padding: 10 }}
+                        >
+                          <Typography component="div">
+                            <Box textAlign="justify">{item.item}</Box>
+                          </Typography>
+                        </Paper>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
+            {provided.placeholder}
 
-        <Paper square variant="outlined" style={{ padding: 10 }}>
-          <form onSubmit={handleItemSubmit}>
-            <TextField
-              fullWidth
-              label="Add new todo"
-              value={todo}
-              onChange={handleItemInputChange}
-            />
-            <br />
-            <Button type="submit" variant="contained" color="secondary">
-              Add
-            </Button>
-          </form>
-        </Paper>
-      </CardContent>
+            <Paper square variant="outlined" style={{ padding: 10 }}>
+              <form onSubmit={handleItemSubmit}>
+                <TextField
+                  fullWidth
+                  label="Add new todo"
+                  value={todo}
+                  onChange={handleItemInputChange}
+                />
+                <br />
+                <Button type="submit" variant="contained" color="secondary">
+                  Add
+                </Button>
+              </form>
+            </Paper>
+          </CardContent>
+        )}
+      </Droppable>
     </Card>
   );
 }

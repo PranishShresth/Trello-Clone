@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sideBar: {
-    minWidth: "100px",
+    minWidth: "200px",
 
     "& ul": {
       listStyleType: "none",
