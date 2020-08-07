@@ -1,0 +1,27 @@
+.boards-container {
+  display: flex;
+  overflow-x: auto;
+  width: 100%;
+  min-height: 100%;
+  padding: 10;
+}
+
+.boards-container > * {
+  flex: 0 0 auto;
+  margin-left: 10px;
+}
+.boards-container::after {
+  content: "";
+  flex: 0 0 10px;
+}
+
+.board-cards {
+  width: 300px;
+  height: calc(100% - 10px - 17px);
+}
+.board-cards > * {
+  background-color: #e2e4e6;
+  color: #333;
+
+  padding: 0 10px;
+}

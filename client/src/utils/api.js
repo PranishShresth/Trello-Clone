@@ -60,15 +60,15 @@ export const CreateNewBoard = async (payload) => {
   }
 };
 
-export const getOneBoard = async (boardName) => {
-  try {
-    let board = await axios.get(
-      `http://localhost:5000/api/board/${boardName}`,
-      config
-    );
-    return board;
-  } catch (err) {}
-};
+// export const getOneBoard = async (boardName) => {
+//   try {
+//     let board = await axios.get(
+//       `http://localhost:5000/api/board/${boardName}`,
+//       config
+//     );
+//     return board;
+//   } catch (err) {}
+// };
 
 export const getAllBoards = async (payload) => {
   try {
@@ -108,6 +108,30 @@ export const addItemToCard = async (payload) => {
       config
     );
     return item;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const reOrderCardItems = async (payload) => {
+  try {
+    const boardCards = await axios.put(
+      "http://localhost:5000/api/board/card/reorder",
+      payload,
+      config
+    );
+    return boardCards;
+  } catch (err) {}
+};
+
+//when the component first mounts
+export const getSpecificBoard = async (boardName) => {
+  try {
+    let board = await axios.get(
+      `http://localhost:5000/api/board/${boardName}`,
+      config
+    );
+    return board;
   } catch (err) {
     console.error(err);
   }

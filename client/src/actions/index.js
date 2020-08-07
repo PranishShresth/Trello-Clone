@@ -51,3 +51,13 @@ export const getAllBoards = (boards) => ({
   type: BOARDS.GET_ALL_BOARDS,
   payload: boards,
 });
+
+export const setSpecificBoards = (board) => ({
+  type: BOARDS.GET_ONE_BOARD_SUCCESS,
+  payload: board,
+});
+
+export const getSpecificBoard = (payload) => ({
+  type: BOARDS.GET_ONE_BOARD,
+  payload: payload,
+});

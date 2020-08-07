@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "none",
       textAlign: "center",
-      color: "black",
     },
   },
 }));
@@ -78,7 +77,11 @@ function MainPage({ login, getAllBoards, boards, location }) {
                   xs={10}
                   className={classes.gridItems}
                 >
-                  <Paper elevation={3} className={classes.paper}>
+                  <Paper
+                    elevation={3}
+                    style={{ backgroundColor: `${board.backgroundColor}` }}
+                    className={classes.paper}
+                  >
                     <Link
                       to={{
                         pathname: `/boards/${board.name}`,
@@ -94,7 +97,12 @@ function MainPage({ login, getAllBoards, boards, location }) {
                         height: "100%",
                       }}
                     />
-                    {board.name}
+                    <Typography
+                      style={{ color: "white", fontWeight: 1000 }}
+                      component="h2"
+                    >
+                      {board.name}
+                    </Typography>
                   </Paper>
                 </Grid>
               );

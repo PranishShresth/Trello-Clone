@@ -12,12 +12,14 @@ import {
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import {
+  Add,
+  Search,
+  AccountCircle,
+  Notifications,
+  More,
+} from "@material-ui/icons";
+
 import { connect } from "react-redux";
 import { LogOutUser } from "../../actions/index";
 
@@ -146,16 +148,14 @@ function Header({ logOut }) {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
+          <Badge badgeContent={4} color="secondary"></Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
+            <Notifications />
           </Badge>
         </IconButton>
         <p>Notifications</p>
@@ -191,7 +191,7 @@ function Header({ logOut }) {
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <Search />
             </div>
             <InputBase
               placeholder="Search…"
@@ -205,13 +205,11 @@ function Header({ logOut }) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
+              <Add />
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
+                <Notifications />
               </Badge>
             </IconButton>
             <IconButton
@@ -233,7 +231,7 @@ function Header({ logOut }) {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <More />
             </IconButton>
           </div>
         </Toolbar>

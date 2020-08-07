@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getOneBoard } from "../utils/api";
-import getJwtToken from "../utils/jwt";
+import { reOrderCardItems, addNewCard } from "../utils/api";
 import TodoCard from "../components/TodoCard";
 import { Grid, IconButton, Button, TextField, Paper } from "@material-ui/core";
 import Header from "../components/Header/Header";
 import { connect } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
-import { addNewCard } from "../utils/api";
+import { getSpecificBoard } from "../actions/index";
 import axios from "axios";
+import "./Boards.css";
+
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-function Boards({ login }) {
+function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   const [cardName, setCardName] = useState("");
   let { boardName } = useParams();
   const [cards, setCards] = useState([{}]);
@@ -22,24 +23,12 @@ function Boards({ login }) {
     setToggle((prevState) => !prevState);
   };
 
-  //when the component first mounts
-  async function getSpecificBoard() {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + getJwtToken(),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-    let board = await axios.get(
-      `http://localhost:5000/api/board/${boardName}`,
-      config
-    );
-    const cards = await board.data;
-    setCards(cards.cards);
-  }
+  const getSpecificBoard = () => {
+    getOneBoard(boardName);
+  };
+
   useEffect(() => {
-    getSpecificBoard();
+    getOneBoard(boardName);
   }, []); //fires when cards changes
 
   //handling input change
@@ -51,56 +40,44 @@ function Boards({ login }) {
   const handleCardNameSubmit = async (ev) => {
     ev.preventDefault();
     await addNewCard({ boardName: boardName, name: cardName });
-    await getSpecificBoard();
+    await getOneBoard(boardName);
   };
   const onDragEnd = async (result) => {
     const { destination, draggableId, source } = result;
     if (!destination) return;
-
-    const config = {
-      headers: {
-        Authorization: "Bearer " + getJwtToken(),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+    const payload = {
+      destination: destination.droppableId,
+      itemId: draggableId,
+      source: source.droppableId,
     };
-    console.log(result);
-    await axios.put(
-      "http://localhost:5000/api/board/card/reorder",
-      {
-        destination: destination.droppableId,
-        itemId: draggableId,
-        source: source.droppableId,
-      },
-      config
-    );
-    await getSpecificBoard();
+
+    await getOneBoard(boardName);
   };
 
   return (
     <section
       className="boards"
       style={{
-        backgroundColor: "rgb(75, 191, 107)",
+        backgroundColor: `${specificBoard.backgroundColor}`,
         minHeight: "100%",
         height: "auto",
       }}
     >
       <Header />
-      <Grid container spacing={1} style={{ padding: 10 }}>
+      <div className="boards-container">
         <DragDropContext onDragEnd={onDragEnd}>
-          {cards &&
-            cards.map((x) => {
+          {specificBoard.cards &&
+            specificBoard.cards.map((x) => {
               return (
-                <Grid key={`${x._id}`} item>
+                <div className="board-cards" key={`${x._id}`} item>
                   <TodoCard updateBoards={getSpecificBoard} card={x} />
-                </Grid>
+                </div>
               );
             })}
         </DragDropContext>
 
-        <Grid item md={2}>
-          {!toggle ? (
+        {!toggle ? (
+          <div className="board-cards">
             <Button
               onClick={handleButtonToggle}
               style={{ backgroundColor: "hsla(0,0%,100%,.24)" }}
@@ -109,35 +86,41 @@ function Boards({ login }) {
               <AddIcon />
               Add a list
             </Button>
-          ) : (
-            <Paper style={{ backgroundColor: "#ebecf0", padding: 10 }}>
-              <form onSubmit={handleCardNameSubmit}>
-                <TextField
-                  placeholder="Enter a list name"
-                  variant="outlined"
-                  fullWidth
-                  value={cardName}
-                  onChange={handleInputChange}
-                />
-                <Button
-                  type="submit"
-                  style={{ backgroundColor: "#5aac44", color: "#fff" }}
-                >
-                  Add
-                </Button>
-                <IconButton onClick={handleButtonToggle}>
-                  <CloseIcon />
-                </IconButton>
-              </form>
-            </Paper>
-          )}
-        </Grid>
-      </Grid>
+          </div>
+        ) : (
+          <Paper style={{ backgroundColor: "#ebecf0", padding: 10 }}>
+            <form onSubmit={handleCardNameSubmit}>
+              <TextField
+                placeholder="Enter a list name"
+                variant="outlined"
+                fullWidth
+                value={cardName}
+                onChange={handleInputChange}
+              />
+              <Button
+                type="submit"
+                style={{ backgroundColor: "#5aac44", color: "#fff" }}
+              >
+                Add
+              </Button>
+              <IconButton onClick={handleButtonToggle}>
+                <CloseIcon />
+              </IconButton>
+            </form>
+          </Paper>
+        )}
+      </div>
     </section>
   );
 }
 
-const mapStateToProps = ({ login }) => ({
+const mapStateToProps = ({ login, boards }) => ({
   login,
+  boards,
 });
-export default connect(mapStateToProps, null)(Boards);
+const mapDispatchToProps = (dispatch) => ({
+  getOneBoard: (payload) => {
+    dispatch(getSpecificBoard(payload));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Boards);

@@ -5,7 +5,6 @@ const boardSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   cards: [
     {
@@ -13,6 +12,10 @@ const boardSchema = new Schema({
       ref: "Cards",
     },
   ],
+  backgroundColor: {
+    type: String,
+    default: "rgb(0, 121, 191)",
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

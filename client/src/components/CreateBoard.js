@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { CreateNewBoard } from "../utils/api";
 import {
   Paper,
   TextField,
   Button,
   Card,
+  Grid,
   CardContent,
   CardHeader,
   IconButton,
@@ -16,6 +17,8 @@ import CloseIcon from "@material-ui/icons/Close";
 function CreateBoard({ login, getAllBoards }) {
   const [openBoard, setOpenBoard] = useState(false);
   const [boardName, setBoardName] = useState("");
+  const [boardColor, setBoardColor] = useState("");
+  const cardRef = useRef(null);
 
   const handleOpenBoard = () => {
     setOpenBoard((prevState) => !prevState);
@@ -24,11 +27,15 @@ function CreateBoard({ login, getAllBoards }) {
   const handleBoardNameChange = (ev) => {
     setBoardName(ev.target.value);
   };
-  console.log(login.user.name);
 
+  const handleColorChange = (ev) => {
+    cardRef.current.style.backgroundColor = ev.target.style.backgroundColor;
+    setBoardColor(ev.target.style.backgroundColor);
+  };
   const handleBoardSubmit = async (ev) => {
     ev.preventDefault();
-    await CreateNewBoard({ boardName });
+    console.log(boardColor);
+    await CreateNewBoard({ boardName, boardColor });
     await getAllBoards(login.user.name);
   };
   return (
@@ -38,27 +45,29 @@ function CreateBoard({ login, getAllBoards }) {
         Create New Board
       </Paper>
       <div className={openBoard ? "boardOpen" : "boardClose"}>
-        <Card
-          style={{
-            maxHeight: "150px",
-            minWidth: "250px",
-            marginTop: 40,
-          }}
-        >
-          <CardHeader
-            style={{ padding: 10 }}
-            subheader="Create your board"
-            action={
-              <IconButton
-                aria-label="close"
-                onClick={() => setOpenBoard(false)}
-              >
-                <CloseIcon />
-              </IconButton>
-            }
-          />
-          <CardContent style={{ padding: 10 }}>
-            <form onSubmit={handleBoardSubmit}>
+        <form onSubmit={handleBoardSubmit} className="form-container">
+          <Card
+            style={{
+              maxHeight: "140px",
+              minWidth: "300px",
+              margin: 20,
+              color: "white",
+            }}
+          >
+            <CardHeader
+              style={{ padding: 0, color: "white" }}
+              subheader="Create your board"
+              action={
+                <IconButton
+                  aria-label="close"
+                  onClick={() => setOpenBoard(false)}
+                  ref={cardRef}
+                >
+                  <CloseIcon />
+                </IconButton>
+              }
+            />
+            <CardContent style={{ padding: 10 }}>
               <TextField
                 name="boardName"
                 value={boardName}
@@ -66,12 +75,55 @@ function CreateBoard({ login, getAllBoards }) {
                 fullWidth
                 label="Board name*"
               />
-              <Button color="primary" type="submit">
-                Create
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            </CardContent>
+            <Button color="primary" variant="contained" type="submit">
+              Create
+            </Button>
+          </Card>
+
+          <div
+            style={{
+              height: "96px",
+              marginTop: "20px",
+              width: "100px",
+            }}
+          >
+            <div className="background-grid">
+              <div className="background-grid-items">
+                <button
+                  type="button"
+                  className="background-button"
+                  onClick={handleColorChange}
+                  style={{ backgroundColor: "rgb(176, 70, 50)" }}
+                ></button>
+              </div>
+              <div className="background-grid-items">
+                <button
+                  type="button"
+                  className="background-button"
+                  onClick={handleColorChange}
+                  style={{ backgroundColor: "rgb(0, 121, 191)" }}
+                ></button>
+              </div>
+              <div className="background-grid-items">
+                <button
+                  onClick={handleColorChange}
+                  type="button"
+                  className="background-button"
+                  style={{ backgroundColor: "rgb(210, 144, 52)" }}
+                ></button>
+              </div>
+              <div className="background-grid-items">
+                <button
+                  type="button"
+                  className="background-button"
+                  onClick={handleColorChange}
+                  style={{ backgroundColor: "rgb(81, 152, 57)" }}
+                ></button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </>
   );

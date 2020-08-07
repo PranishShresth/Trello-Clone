@@ -4,16 +4,19 @@ const User = require("../models/user.model");
 module.exports = {
   createBoard: async function (req, res, next) {
     const { id } = req.user;
-    const { boardName } = req.body;
+    console.log(req.body);
+
+    const { boardName, boardColor } = req.body;
     try {
       const newBoard = new Board({
         name: boardName,
+        backgroundColor: boardColor,
         createdBy: id,
       });
       await newBoard.save();
       return res.status(201).send("Created");
     } catch (err) {
-      if (err) throw err;
+      if (err) console.log(err);
     }
   },
   getAllBoards: async function (req, res, next) {

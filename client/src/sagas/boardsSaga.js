@@ -1,7 +1,11 @@
 import { fork, call, put, takeLatest, takeEvery } from "redux-saga/effects";
 import { push } from "connected-react-router";
-import { getAllBoards, getBoard } from "../utils/api";
-import { setGetBoardsError, setGetBoardsSuccess } from "../actions/index";
+import { getAllBoards, getSpecificBoard } from "../utils/api";
+import {
+  setGetBoardsError,
+  setGetBoardsSuccess,
+  setSpecificBoards,
+} from "../actions/index";
 import { BOARDS } from "../constants";
 
 function* callGetAllBoards(action) {
@@ -14,8 +18,18 @@ function* callGetAllBoards(action) {
   }
 }
 
+function* callGetOneBoard({ payload }) {
+  try {
+    const board = yield call(getSpecificBoard, payload);
+    console.log(board);
+    yield put(setSpecificBoards(board.data));
+  } catch (err) {
+    console.log(err);
+  }
+}
 function* boardsSaga() {
   yield takeEvery(BOARDS.GET_ALL_BOARDS, callGetAllBoards);
+  yield takeEvery(BOARDS.GET_ONE_BOARD, callGetOneBoard);
 }
 
 export default boardsSaga;

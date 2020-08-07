@@ -24,7 +24,7 @@ module.exports = {
       if (user.password === password) {
         res.setHeader("Content-Type", "application/json");
         let token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
-          expiresIn: 129600,
+          expiresIn: "1h",
         });
         return res.status(200).json({
           user: {
