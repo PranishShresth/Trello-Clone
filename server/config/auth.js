@@ -5,7 +5,7 @@ const auth = (req, res, next) => {
     const token = req.header("Authorization").split(" ")[1];
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      if (err) return res.status(403);
+      if (err) return res.status(403).json({ msg: err.message });
       req.user = user;
       next();
     });

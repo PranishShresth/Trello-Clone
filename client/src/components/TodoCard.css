@@ -1,0 +1,42 @@
+.card-composer {
+  min-height: 38px;
+  max-height: 38px;
+  position: relative;
+}
+.card-composer a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-radius: 3px;
+  font-size: 18px;
+  color: #5e6c84;
+  display: block;
+  flex: 1 0 auto;
+  position: relative;
+  text-decoration: none;
+  line-height: 20px;
+  display: flex;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.card-composer a p {
+  margin: 0;
+}
+
+.card-composer a:hover {
+  background-color: rgba(9, 30, 66, 0.04);
+}
+
+.todo-card-item {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.todo-card-iconButton {
+  border-radius: 0;
+  padding: 0;
+}

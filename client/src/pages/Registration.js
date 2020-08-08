@@ -48,7 +48,6 @@ function Registration({ login }, ...props) {
   const history = useHistory();
   const [value, setValue] = React.useState(0);
   React.useEffect(() => {
-    console.log(login);
     if (login.isLoggedIn) {
       history.push(`/home/${login.user.name}`);
     }

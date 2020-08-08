@@ -26,6 +26,7 @@ export const loginReducer = (state = initialState, action) => {
       });
     case USER.LOGOUT_USER:
       localStorage.removeItem("jwt-token");
+      window.location = "/";
       return Object.assign({}, state, {
         ...state,
         user: {},

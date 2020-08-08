@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  IconButton,
   TextField,
   Paper,
   Typography,
@@ -10,15 +11,23 @@ import {
   Button,
   Box,
 } from "@material-ui/core";
+import "./TodoCard.css";
+import { Add, Close, Edit } from "@material-ui/icons";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import UpdateOverlay from "./UpdateOverlay";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
 
 function TodoCard({ card, updateBoards }) {
   const [todo, setTodo] = useState("");
+  const [toggleAddTodo, setToggleAddTodo] = useState(false);
   const handleItemInputChange = (ev) => {
     ev.persist();
     setTodo(ev.target.value);
+  };
+
+  const handleButtonToggle = () => {
+    setToggleAddTodo((prevState) => !prevState);
   };
 
   const handleItemSubmit = async (ev) => {
@@ -60,7 +69,9 @@ function TodoCard({ card, updateBoards }) {
 
   return (
     <Card style={{ backgroundColor: "#ebecf0" }}>
-      <CardHeader subheader={card.name} />
+      <Typography component="h2" variant="h5" style={{ padding: "5px 16px" }}>
+        {card.name}
+      </Typography>
       <Droppable droppableId={`${card._id}`}>
         {(provided) => (
           <CardContent
@@ -88,11 +99,14 @@ function TodoCard({ card, updateBoards }) {
                         <Paper
                           square
                           variant="outlined"
-                          style={{ padding: 10 }}
+                          className="todo-card-item"
                         >
                           <Typography component="div">
                             <Box textAlign="justify">{item.item}</Box>
                           </Typography>
+                          <IconButton className="todo-card-iconButton">
+                            <Edit />
+                          </IconButton>
                         </Paper>
                       </div>
                     )}
@@ -101,20 +115,40 @@ function TodoCard({ card, updateBoards }) {
               })}
             {provided.placeholder}
 
-            <Paper square variant="outlined" style={{ padding: 10 }}>
-              <form onSubmit={handleItemSubmit}>
-                <TextField
-                  fullWidth
-                  label="Add new todo"
-                  value={todo}
-                  onChange={handleItemInputChange}
-                />
-                <br />
-                <Button type="submit" variant="contained" color="secondary">
-                  Add
-                </Button>
-              </form>
-            </Paper>
+            {!toggleAddTodo ? (
+              <div
+                className="card-composer"
+                onClick={handleButtonToggle}
+                style={{
+                  backgroundColor: "hsla(0,0%,100%,.24)",
+                }}
+              >
+                <a href="#" className="card-composer-text">
+                  <span>
+                    <Add className="card-composer-icon" fontSize="large" />
+                  </span>
+                  <p>Add a todo</p>
+                </a>
+              </div>
+            ) : (
+              <Paper style={{ padding: 10, background: "transparent" }}>
+                <form onSubmit={handleItemSubmit}>
+                  <TextField
+                    fullWidth
+                    label="Add new todo"
+                    value={todo}
+                    onChange={handleItemInputChange}
+                  />
+                  <br />
+                  <Button type="submit" variant="contained" color="secondary">
+                    Add
+                  </Button>
+                  <IconButton onClick={handleButtonToggle}>
+                    <Close />
+                  </IconButton>
+                </form>
+              </Paper>
+            )}
           </CardContent>
         )}
       </Droppable>

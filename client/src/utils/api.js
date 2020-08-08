@@ -127,6 +127,13 @@ export const reOrderCardItems = async (payload) => {
 //when the component first mounts
 export const getSpecificBoard = async (boardName) => {
   try {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
     let board = await axios.get(
       `http://localhost:5000/api/board/${boardName}`,
       config

@@ -22,10 +22,9 @@ function App({ currentUser, fetchCurrentUser }) {
   }, []);
   return (
     <Switch>
-      <Route exact path="/" render={() => <Registration />} />
-
-      <PrivateRoute exact path="/home/:user" component={MainPage} />
-      <PrivateRoute exact path="/boards/:boardName" component={Boards} />
+      <Route exact path="/" component={Registration} />
+      <Route exact path="/home/:user" component={MainPage} />
+      <Route exact path="/boards/:boardName" component={Boards} />
     </Switch>
   );
 }

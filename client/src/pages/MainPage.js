@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { getAllBoards } from "../actions/index";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
+import UpdateOverlay from "../components/UpdateOverlay";
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     padding: "40px 10%",
@@ -83,10 +84,7 @@ function MainPage({ login, getAllBoards, boards, location }) {
                     className={classes.paper}
                   >
                     <Link
-                      to={{
-                        pathname: `/boards/${board.name}`,
-                        state: { from: location.pathname },
-                      }}
+                      to={`/boards/${board.name}`}
                       style={{
                         position: "absolute",
                         top: 0,

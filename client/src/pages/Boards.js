@@ -88,26 +88,28 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
             </Button>
           </div>
         ) : (
-          <Paper style={{ backgroundColor: "#ebecf0", padding: 10 }}>
-            <form onSubmit={handleCardNameSubmit}>
-              <TextField
-                placeholder="Enter a list name"
-                variant="outlined"
-                fullWidth
-                value={cardName}
-                onChange={handleInputChange}
-              />
-              <Button
-                type="submit"
-                style={{ backgroundColor: "#5aac44", color: "#fff" }}
-              >
-                Add
-              </Button>
-              <IconButton onClick={handleButtonToggle}>
-                <CloseIcon />
-              </IconButton>
-            </form>
-          </Paper>
+          <div className="board-cards">
+            <Paper style={{ backgroundColor: "#ebecf0", padding: 10 }}>
+              <form onSubmit={handleCardNameSubmit}>
+                <TextField
+                  placeholder="Enter a list name"
+                  variant="outlined"
+                  fullWidth
+                  value={cardName}
+                  onChange={handleInputChange}
+                />
+                <Button
+                  type="submit"
+                  style={{ backgroundColor: "#5aac44", color: "#fff" }}
+                >
+                  Add
+                </Button>
+                <IconButton onClick={handleButtonToggle}>
+                  <CloseIcon />
+                </IconButton>
+              </form>
+            </Paper>
+          </div>
         )}
       </div>
     </section>
