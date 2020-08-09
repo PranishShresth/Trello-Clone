@@ -7,6 +7,8 @@ import Header from "../components/Header/Header";
 import { connect } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
+import UpdateOverlay from "../components/UpdateOverlay";
+
 import { getSpecificBoard } from "../actions/index";
 import axios from "axios";
 import "./Boards.css";
@@ -16,8 +18,19 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   const [cardName, setCardName] = useState("");
   let { boardName } = useParams();
+  const [overlay, setOverlay] = useState(false);
   const [cards, setCards] = useState([{}]);
+
+  const [mousePos, setMousePos] = useState({
+    x: null,
+    y: null,
+  });
+
   const [toggle, setToggle] = useState(false);
+
+  const getMousePos = (x, y) => {
+    setMousePos({ x, y });
+  };
 
   const handleButtonToggle = (ev) => {
     setToggle((prevState) => !prevState);
@@ -59,18 +72,30 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
       className="boards"
       style={{
         backgroundColor: `${specificBoard.backgroundColor}`,
-        minHeight: "100%",
-        height: "auto",
+        height: "100%",
       }}
     >
       <Header />
+      {overlay && (
+        <UpdateOverlay
+          mousePos={mousePos}
+          setOverlay={setOverlay}
+          overlay={overlay}
+        />
+      )}
+
       <div className="boards-container">
         <DragDropContext onDragEnd={onDragEnd}>
           {specificBoard.cards &&
             specificBoard.cards.map((x) => {
               return (
                 <div className="board-cards" key={`${x._id}`} item>
-                  <TodoCard updateBoards={getSpecificBoard} card={x} />
+                  <TodoCard
+                    setOverlay={setOverlay}
+                    updateBoards={getSpecificBoard}
+                    mousePos={getMousePos}
+                    card={x}
+                  />
                 </div>
               );
             })}

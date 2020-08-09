@@ -1,9 +1,10 @@
 .boards-container {
   display: flex;
-  overflow-x: auto;
   width: 100%;
-  min-height: 100%;
+  align-items: stretch;
   padding: 20px;
+  height: calc(100% - 50px);
+  overflow-x: auto;
 }
 
 .boards-container > * {

@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -87,8 +88,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header({ logOut }) {
+function Header({ logOut, login }) {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -183,6 +185,9 @@ function Header({ logOut }) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => {
+              history.push("/home/" + login.user.name);
+            }}
           >
             <HomeIcon />
           </IconButton>
@@ -242,8 +247,11 @@ function Header({ logOut }) {
   );
 }
 
-const MapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   logOut: () => dispatch(LogOutUser()),
 });
+const mapStateToProps = ({ login }) => ({
+  login,
+});
 
-export default connect(null, MapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

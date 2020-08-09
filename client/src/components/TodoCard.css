@@ -32,11 +32,13 @@
 }
 
 .todo-card-item {
-  padding: 12px;
   display: flex;
   justify-content: space-between;
+  padding: 8px;
+  border-radius: 3px;
+  margin: 4px 0;
 }
-.todo-card-iconButton {
+#iconButton {
   border-radius: 0;
   padding: 0;
 }

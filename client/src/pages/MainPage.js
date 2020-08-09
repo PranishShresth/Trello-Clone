@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { getAllBoards } from "../actions/index";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
-import UpdateOverlay from "../components/UpdateOverlay";
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     padding: "40px 10%",

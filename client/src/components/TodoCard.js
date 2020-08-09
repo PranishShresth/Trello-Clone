@@ -18,9 +18,17 @@ import UpdateOverlay from "./UpdateOverlay";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
 
-function TodoCard({ card, updateBoards }) {
+function TodoCard({ card, updateBoards, mousePos, setOverlay }) {
   const [todo, setTodo] = useState("");
   const [toggleAddTodo, setToggleAddTodo] = useState(false);
+
+  const handleEditButton = (ev) => {
+    var rect = ev.currentTarget.getBoundingClientRect();
+    var x = ev.clientX;
+    var y = ev.clientY;
+    mousePos(x, y);
+    setOverlay(true);
+  };
   const handleItemInputChange = (ev) => {
     ev.persist();
     setTodo(ev.target.value);
@@ -101,10 +109,19 @@ function TodoCard({ card, updateBoards }) {
                           variant="outlined"
                           className="todo-card-item"
                         >
-                          <Typography component="div">
-                            <Box textAlign="justify">{item.item}</Box>
+                          <Typography
+                            style={{
+                              overflowWrap: "break-word",
+                              overflow: "hidden",
+                            }}
+                            component="h5"
+                          >
+                            {item.item}
                           </Typography>
-                          <IconButton className="todo-card-iconButton">
+                          <IconButton
+                            id="iconButton"
+                            onClick={handleEditButton}
+                          >
                             <Edit />
                           </IconButton>
                         </Paper>
@@ -120,7 +137,7 @@ function TodoCard({ card, updateBoards }) {
                 className="card-composer"
                 onClick={handleButtonToggle}
                 style={{
-                  backgroundColor: "hsla(0,0%,100%,.24)",
+                  backgroundColor: "transparent",
                 }}
               >
                 <a href="#" className="card-composer-text">
@@ -131,7 +148,7 @@ function TodoCard({ card, updateBoards }) {
                 </a>
               </div>
             ) : (
-              <Paper style={{ padding: 10, background: "transparent" }}>
+              <Paper style={{ padding: 10 }}>
                 <form onSubmit={handleItemSubmit}>
                   <TextField
                     fullWidth
