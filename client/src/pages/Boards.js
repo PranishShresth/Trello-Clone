@@ -19,7 +19,6 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   const [cardName, setCardName] = useState("");
   let { boardName } = useParams();
   const [overlay, setOverlay] = useState(false);
-  const [cards, setCards] = useState([{}]);
 
   const [mousePos, setMousePos] = useState({
     x: null,
