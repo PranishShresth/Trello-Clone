@@ -26,7 +26,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   });
 
   const [toggle, setToggle] = useState(false);
-
+  // toggle
   const getMousePos = (x, y) => {
     setMousePos({ x, y });
   };
