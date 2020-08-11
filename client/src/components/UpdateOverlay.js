@@ -1,5 +1,7 @@
-import React from "react";
-import { TextareaAutosize, Button } from "@material-ui/core";
+import React, { useState } from "react";
+import { TextareaAutosize, Button, IconButton } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
+import { updateCardItems } from "../utils/api";
 
 const style = {
   textarea: { resize: "none", overflow: "hidden" },
@@ -10,14 +12,17 @@ const style = {
   },
 };
 
-const UpdateOverlay = ({ mousePos: { x, y }, setOverlay, overlay }) => {
+const UpdateOverlay = ({ overlayVar, setOverlay, overlay }) => {
+  const [value, setValue] = useState("");
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    await updateCardItems({ ...overlayVar, value });
+    setOverlay(!overlay);
+  };
   return (
     <div className="update-overlay-container" style={style.container}>
       <div
         className="relative-container"
-        onClick={() => {
-          setOverlay(!overlay);
-        }}
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.75)",
           width: "100%",
@@ -29,23 +34,37 @@ const UpdateOverlay = ({ mousePos: { x, y }, setOverlay, overlay }) => {
         <div
           className="update-overlay"
           style={{
-            transform: `translate3d(${x}px,${y}px,0)`,
+            transform: `translate3d(${overlayVar.x}px,${overlayVar.y}px,0)`,
             position: "absolute",
             zIndex: 30,
           }}
         >
-          <div className="textarea-container">
-            <TextareaAutosize
-              rowsMin={7}
-              rowsMax={9}
-              cols={40}
-              style={style.textarea}
-            />
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="textarea-container">
+              <TextareaAutosize
+                onChange={(ev) => {
+                  setValue(ev.target.value);
+                }}
+                value={value}
+                rowsMin={7}
+                rowsMax={9}
+                cols={40}
+                style={style.textarea}
+              />
+            </div>
 
-          <Button color="secondary" variant="contained">
-            Save
-          </Button>
+            <Button type="submit" color="secondary" variant="contained">
+              Save
+            </Button>
+            <IconButton
+              onClick={() => {
+                setOverlay(!overlay);
+              }}
+              style={{ background: "#e5e5e5" }}
+            >
+              <Close />
+            </IconButton>
+          </form>
         </div>
       </div>
     </div>

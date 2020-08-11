@@ -143,3 +143,11 @@ export const getSpecificBoard = async (boardName) => {
     console.error(err);
   }
 };
+
+export const updateCardItems = async (payload) => {
+  return axios.patch(
+    "http://localhost:5000/api/board/card/update",
+    payload,
+    config
+  );
+};

@@ -74,6 +74,28 @@ module.exports = {
     }
   },
 
+  updateCardItems: async function (req, res, next) {
+    try {
+      const { cardId, value, itemId } = req.body;
+      const card = await Card.findOneAndUpdate(
+        {
+          _id: cardId,
+          "items._id": itemId,
+        },
+        {
+          $set: {
+            "items.$.item": value,
+          },
+        },
+        (err, card) => {
+          if (!err) return res.status(200).json(card);
+        }
+      );
+    } catch (err) {
+      if (err) return res.status(400).json({ msg: err.message });
+    }
+  },
+
   addItemsToCard: async function (req, res, next) {
     try {
       const { item, cardId } = req.body;

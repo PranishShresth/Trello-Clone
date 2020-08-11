@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Grid, Button, makeStyles, Paper, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import CreateBoard from "./../components/CreateBoard";
 import { connect } from "react-redux";
 import { getAllBoards } from "../actions/index";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
+import "./MainPage.css";
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     padding: "40px 10%",
@@ -20,8 +21,13 @@ const useStyles = makeStyles((theme) => ({
     "& ul": {
       listStyleType: "none",
       "& li": {
-        margin: "10px 0",
-        color: "#0079bf",
+        padding: "10px 0",
+        backgroundColor: "#e4f0f6",
+        margin: "0px 5px 5px 5px",
+        "& a": {
+          textDecoration: "none",
+          color: "#0079bf",
+        },
       },
     },
   },
@@ -51,8 +57,8 @@ function MainPage({ login, getAllBoards, boards, location }) {
   const classes = useStyles();
 
   useEffect(() => {
+    document.title = "Home | " + login.user.name;
     getAllBoards(user);
-    console.log(location);
   }, []);
 
   return (
@@ -62,8 +68,12 @@ function MainPage({ login, getAllBoards, boards, location }) {
         <div className={classes.mainContainer}>
           <div className={classes.sideBar}>
             <ul>
-              <li>Boards</li>
-              <li>Home</li>
+              <li>
+                <NavLink to={`/home/${login.user.name}`}>Boards</NavLink>
+              </li>
+              <li>
+                <NavLink to={`/home/${login.user.name}`}>Home</NavLink>
+              </li>
             </ul>
           </div>
           <Grid container spacing={2}>

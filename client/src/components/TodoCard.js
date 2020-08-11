@@ -18,7 +18,7 @@ import UpdateOverlay from "./UpdateOverlay";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
 
-function TodoCard({ card, updateBoards, mousePos, setOverlay }) {
+function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
   const [todo, setTodo] = useState("");
   const [toggleAddTodo, setToggleAddTodo] = useState(false);
 
@@ -26,7 +26,11 @@ function TodoCard({ card, updateBoards, mousePos, setOverlay }) {
     var rect = ev.currentTarget.getBoundingClientRect();
     var x = ev.clientX;
     var y = ev.clientY;
-    mousePos(x, y);
+    var cardId = card._id;
+    var itemId = ev.target
+      .closest("div")
+      .parentNode.getAttribute("data-rbd-draggable-id");
+    overlayVar({ x, y, cardId, itemId });
     setOverlay(true);
   };
   const handleItemInputChange = (ev) => {

@@ -20,15 +20,12 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   let { boardName } = useParams();
   const [overlay, setOverlay] = useState(false);
 
-  const [mousePos, setMousePos] = useState({
-    x: null,
-    y: null,
-  });
+  const [overlayVar, setOverlayVar] = useState({});
 
   const [toggle, setToggle] = useState(false);
   // toggle
-  const getMousePos = (x, y) => {
-    setMousePos({ x, y });
+  const getOverlayVar = (payload) => {
+    setOverlayVar(payload);
   };
 
   const handleButtonToggle = (ev) => {
@@ -40,6 +37,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
   };
 
   useEffect(() => {
+    document.title = boardName;
     getOneBoard(boardName);
   }, []); //fires when cards changes
 
@@ -77,7 +75,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
       <Header />
       {overlay && (
         <UpdateOverlay
-          mousePos={mousePos}
+          overlayVar={overlayVar}
           setOverlay={setOverlay}
           overlay={overlay}
         />
@@ -92,7 +90,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
                   <TodoCard
                     setOverlay={setOverlay}
                     updateBoards={getSpecificBoard}
-                    mousePos={getMousePos}
+                    overlayVar={getOverlayVar}
                     card={x}
                   />
                 </div>
