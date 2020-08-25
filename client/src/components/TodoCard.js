@@ -30,16 +30,17 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
     var itemId = ev.target
       .closest("div")
       .parentNode.getAttribute("data-rbd-draggable-id");
-    overlayVar({ x, y, cardId, itemId });
+    overlayVar({
+      x,
+      y,
+      cardId,
+      itemId,
+    });
     setOverlay(true);
   };
   const handleItemInputChange = (ev) => {
     ev.persist();
     setTodo(ev.target.value);
-  };
-
-  const handleButtonToggle = () => {
-    setToggleAddTodo((prevState) => !prevState);
   };
 
   const handleItemSubmit = async (ev) => {
@@ -80,8 +81,20 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
   });
 
   return (
-    <Card style={{ backgroundColor: "#ebecf0" }}>
-      <Typography component="h2" variant="h5" style={{ padding: "5px 16px" }}>
+    <Card
+      style={{
+        backgroundColor: "#ebecf0",
+        maxHeight: "600px",
+        width: "auto",
+      }}
+    >
+      <Typography
+        component="h2"
+        variant="h5"
+        style={{
+          padding: "5px 16px",
+        }}
+      >
         {card.name}
       </Typography>
       <Droppable droppableId={`${card._id}`}>
@@ -89,6 +102,7 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
           <CardContent
             {...provided.droppableProps}
             innerRef={provided.innerRef}
+            className="todo-cards"
           >
             {card.items &&
               card.items.map((item, i) => {
@@ -135,11 +149,12 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
                 );
               })}
             {provided.placeholder}
-
             {!toggleAddTodo ? (
               <div
                 className="card-composer"
-                onClick={handleButtonToggle}
+                onClick={() => {
+                  setToggleAddTodo((prevState) => !prevState);
+                }}
                 style={{
                   backgroundColor: "transparent",
                 }}
@@ -148,11 +163,15 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
                   <span>
                     <Add className="card-composer-icon" fontSize="large" />
                   </span>
-                  <p>Add a todo</p>
+                  <p> Add a todo </p>
                 </a>
               </div>
             ) : (
-              <Paper style={{ padding: 10 }}>
+              <Paper
+                style={{
+                  padding: 10,
+                }}
+              >
                 <form onSubmit={handleItemSubmit}>
                   <TextField
                     fullWidth
@@ -164,7 +183,11 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
                   <Button type="submit" variant="contained" color="secondary">
                     Add
                   </Button>
-                  <IconButton onClick={handleButtonToggle}>
+                  <IconButton
+                    onClick={() => {
+                      setToggleAddTodo((prevState) => !prevState);
+                    }}
+                  >
                     <Close />
                   </IconButton>
                 </form>

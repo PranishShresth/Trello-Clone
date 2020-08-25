@@ -78,6 +78,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
           overlayVar={overlayVar}
           setOverlay={setOverlay}
           overlay={overlay}
+          getSpecificBoard={getSpecificBoard}
         />
       )}
 
@@ -86,7 +87,7 @@ function Boards({ login, getOneBoard, boards: { specificBoard } }) {
           {specificBoard.cards &&
             specificBoard.cards.map((x) => {
               return (
-                <div className="board-cards" key={`${x._id}`} item>
+                <div className="board-cards" key={`${x._id}`}>
                   <TodoCard
                     setOverlay={setOverlay}
                     updateBoards={getSpecificBoard}

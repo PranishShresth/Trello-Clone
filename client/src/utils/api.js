@@ -145,9 +145,23 @@ export const getSpecificBoard = async (boardName) => {
 };
 
 export const updateCardItems = async (payload) => {
-  return axios.patch(
+  return await axios.patch(
     "http://localhost:5000/api/board/card/update",
     payload,
     config
+  );
+};
+
+export const deleteCardItems = async (payload) => {
+  return await axios.put(
+    "http://localhost:5000/api/board/card/items",
+    payload,
+    {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
   );
 };

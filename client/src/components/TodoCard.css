@@ -42,3 +42,9 @@
   border-radius: 0;
   padding: 0;
 }
+
+.todo-cards {
+  max-height: 500px; /* To initiate vertical scroll bar */
+  overflow-x: visible;
+  overflow-y: auto;
+}

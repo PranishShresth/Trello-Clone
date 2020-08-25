@@ -1,5 +1,6 @@
 const Card = require("../models/cards.model");
 const Board = require("../models/board.model");
+const Notification = require("../models/notification.model");
 
 module.exports = {
   createCard: async function (req, res, next) {
@@ -9,10 +10,8 @@ module.exports = {
       const card = new Card({
         name: name,
       });
-      console.log(boardName);
       const newCard = await card.save();
       const boards = await Board.findOne({ name: boardName, createdBy: id });
-      console.log(boards);
       const board = await Board.findOneAndUpdate(
         { name: boardName, createdBy: id },
         {
@@ -21,8 +20,15 @@ module.exports = {
           },
         },
         { new: true }
-      ).exec((err, board) => {
-        if (!err) return res.status(201).json(board);
+      ).exec(async (err, board) => {
+        if (!err) {
+          // await new Notification({
+          //   type: "created",
+          //   user: id,
+          //   description: "new Card",
+          // }).save();
+          return res.status(201).json(board);
+        }
       });
     } catch (err) {
       console.error(err);
@@ -65,7 +71,11 @@ module.exports = {
             },
             { safe: true, upsert: true }
           );
-
+          // await new Notification({
+          //   type: "moved",
+          //   user: id,
+          //   description: "card",
+          // }).save();
           return res.status(200).json(card);
         }
       });
@@ -116,6 +126,30 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+    }
+  },
+
+  deleteItemFromCard: async function (req, res, next) {
+    try {
+      const { cardId, itemId } = req.body;
+      const card = await Card.findByIdAndUpdate(
+        {
+          _id: cardId,
+          "items._id": itemId,
+        },
+        {
+          $pull: {
+            items: {
+              _id: itemId,
+            },
+          },
+        },
+        (err, card) => {
+          if (!err) return res.status(200).json(card);
+        }
+      );
+    } catch (err) {
+      if (err) throw new Error(err.message);
     }
   },
 };
