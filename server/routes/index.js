@@ -11,6 +11,7 @@ const auth = require("../config/auth");
 router.post("/user/login", userController.login);
 router.post("/user/register", userController.register);
 router.get("/user/profile", auth, userController.currentUser);
+router.post("/user/oauth", userController.oauth);
 
 //boards
 router.post("/board/create", auth, boardsController.createBoard);

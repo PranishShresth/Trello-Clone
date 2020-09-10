@@ -9,6 +9,7 @@ const config = {
   },
 };
 
+// USER API
 export const getCurrentUser = async (user) => {
   try {
     const user = await axios.get(
@@ -34,6 +35,22 @@ export const fetchLoggedUser = async (loginvalues) => {
     console.error(error);
   }
 };
+export const loginOauth = async (profile) => {
+  try {
+    const user = await axios.post(
+      "http://localhost:5000/api/user/oauth",
+      profile,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const RegisterUser = async (signupvalues) => {
   try {
@@ -47,6 +64,7 @@ export const RegisterUser = async (signupvalues) => {
   }
 };
 
+// BOARD PAGE API
 export const CreateNewBoard = async (payload) => {
   try {
     let board = await axios.post(
@@ -87,6 +105,7 @@ export const getAllBoards = async (payload) => {
   } catch (err) {}
 };
 
+// CARD APIs
 export const addNewCard = async (payload) => {
   try {
     let card = await axios.post(

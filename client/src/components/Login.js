@@ -3,6 +3,7 @@ import { Grid, Typography, TextField, Button, Box } from "@material-ui/core";
 import { connect } from "react-redux";
 import { loginUser } from "./../actions/index";
 import { FormHelperText } from "@material-ui/core";
+import GoogleLogin from "react-google-login";
 
 function Login({ loginUser, login }) {
   const [loginValues, setLoginValues] = useState({ email: "", password: "" });
@@ -14,6 +15,12 @@ function Login({ loginUser, login }) {
     }));
   };
 
+  const responseGoogleSuccess = async (response) => {
+    loginUser(response.profileObj);
+  };
+  const responseGoogleError = async (response) => {
+    console.log(response);
+  };
   const handleLoginSubmit = (ev) => {
     ev.preventDefault();
     loginUser(loginValues);
@@ -69,6 +76,27 @@ function Login({ loginUser, login }) {
           <Button type="submit" color="primary" variant="contained" fullWidth>
             Log in
           </Button>
+        </Grid>
+        <br />
+        <Grid item sx={12}>
+          <GoogleLogin
+            style={{ width: "100%" }}
+            render={(renderProps) => (
+              <Button
+                style={{ width: "100%" }}
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                variant="contained"
+                color="secondary"
+              >
+                Sign in with Google
+              </Button>
+            )}
+            clientId="937632957539-rgj6ua135uhqo0lnuejibuted9ht71ta.apps.googleusercontent.com"
+            onSuccess={responseGoogleSuccess}
+            onFailure={responseGoogleError}
+            cookiePolicy={"single_host_origin"}
+          />
         </Grid>
       </form>
     </Grid>

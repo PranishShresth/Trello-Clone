@@ -17,7 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 function CreateBoard({ login, getAllBoards }) {
   const [openBoard, setOpenBoard] = useState(false);
   const [boardName, setBoardName] = useState("");
-  const [boardColor, setBoardColor] = useState("");
+  const [boardColor, setBoardColor] = useState("rgb(0, 121, 191)");
   const cardRef = useRef(null);
 
   const handleOpenBoard = () => {
@@ -34,7 +34,6 @@ function CreateBoard({ login, getAllBoards }) {
   };
   const handleBoardSubmit = async (ev) => {
     ev.preventDefault();
-    console.log(boardColor);
     await CreateNewBoard({ boardName, boardColor });
     await getAllBoards(login.user.name);
   };
