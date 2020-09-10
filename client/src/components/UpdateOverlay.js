@@ -66,6 +66,7 @@ const UpdateOverlay = ({
             }px,0)`,
             position: "absolute",
             zIndex: 30,
+            display: "flex",
           }}
         >
           <form onSubmit={handleSubmit}>
@@ -85,6 +86,16 @@ const UpdateOverlay = ({
             <Button type="submit" color="secondary" variant="contained">
               Save
             </Button>
+          </form>
+          <div
+            className="update_options"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <form onSubmit={handleDelete}>
+              <Button type="submit" color="secondary">
+                <DeleteForever style={{ color: red[500] }} />
+              </Button>
+            </form>
             <IconButton
               onClick={() => {
                 setOverlay(!overlay);
@@ -92,12 +103,7 @@ const UpdateOverlay = ({
             >
               <Close style={{ color: red[500] }} />
             </IconButton>
-          </form>
-          <form onSubmit={handleDelete}>
-            <Button type="submit" color="secondary">
-              <DeleteForever style={{ color: red[500] }} />
-            </Button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

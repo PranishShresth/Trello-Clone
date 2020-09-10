@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   registrationContainer: {
     flexDirection: "row-reverse",
     height: "100%",
-
+    margin: "20px 80px 10px 80px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -58,7 +58,7 @@ function Registration({ login }, ...props) {
   };
 
   return (
-    <div className={classes.registrationContainer} style={{}}>
+    <div className={classes.registrationContainer}>
       <div className={classes.registration}>
         <Tabs
           value={value}

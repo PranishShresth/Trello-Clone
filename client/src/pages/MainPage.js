@@ -5,6 +5,7 @@ import CreateBoard from "./../components/CreateBoard";
 import { connect } from "react-redux";
 import { getAllBoards } from "../actions/index";
 import { useParams } from "react-router-dom";
+import { Home, Dashboard } from "@material-ui/icons";
 import Header from "../components/Header/Header";
 import "./MainPage.css";
 const useStyles = makeStyles((theme) => ({
@@ -20,13 +21,17 @@ const useStyles = makeStyles((theme) => ({
 
     "& ul": {
       listStyleType: "none",
+      marginRight: "20px",
       "& li": {
         padding: "10px 0",
         backgroundColor: "#e4f0f6",
-        margin: "0px 5px 5px 5px",
+        margin: "0px 3px 3px 5px",
+        borderRadius: "5px",
         "& a": {
           textDecoration: "none",
           color: "#0079bf",
+          display: "flex",
+          alignItems: "center",
         },
       },
     },
@@ -69,10 +74,16 @@ function MainPage({ login, getAllBoards, boards, location }) {
           <div className={classes.sideBar}>
             <ul>
               <li>
-                <NavLink to={`/home/${login.user.name}`}>Boards</NavLink>
+                <NavLink to={`/home/${login.user.name}`}>
+                  <Dashboard />
+                  Boards
+                </NavLink>
               </li>
               <li>
-                <NavLink to={`/home/${login.user.name}`}>Home</NavLink>
+                <NavLink to={`/home/${login.user.name}`}>
+                  <Home />
+                  Home
+                </NavLink>
               </li>
             </ul>
           </div>

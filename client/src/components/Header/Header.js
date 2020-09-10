@@ -19,6 +19,7 @@ import {
   AccountCircle,
   Notifications,
   More,
+  Info,
 } from "@material-ui/icons";
 
 import { connect } from "react-redux";
@@ -212,10 +213,10 @@ function Header({ logOut, login }) {
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Add />
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <Notifications />
-              </Badge>
+            <IconButton aria-label="info " color="inherit">
+              {/* <Badge badgeContent={17} color="secondary"> */}
+              <Info />
+              {/* </Badge> */}
             </IconButton>
             <IconButton
               edge="end"

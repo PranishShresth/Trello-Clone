@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Grid, Typography, TextField, Button, Box } from "@material-ui/core";
 import { connect } from "react-redux";
-import { loginUser } from "./../actions/index";
+import { loginUser, loginUserOauth } from "./../actions/index";
 import { FormHelperText } from "@material-ui/core";
 import GoogleLogin from "react-google-login";
 
-function Login({ loginUser, login }) {
+function Login({ loginUser, login, Oauth }) {
   const [loginValues, setLoginValues] = useState({ email: "", password: "" });
   const handleInputChange = (ev) => {
     ev.persist();
@@ -16,7 +16,7 @@ function Login({ loginUser, login }) {
   };
 
   const responseGoogleSuccess = async (response) => {
-    loginUser(response.profileObj);
+    Oauth(response.profileObj);
   };
   const responseGoogleError = async (response) => {
     console.log(response);
@@ -110,6 +110,9 @@ const mapStateToProps = ({ login }) => ({
 const mapDispatchToProps = (dispatch) => ({
   loginUser: (payload) => {
     dispatch(loginUser(payload));
+  },
+  Oauth: (payload) => {
+    dispatch(loginUserOauth(payload));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

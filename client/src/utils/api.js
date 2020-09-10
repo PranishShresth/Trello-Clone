@@ -1,21 +1,16 @@
 import axios from "axios";
 import getJwtToken from "./jwt";
 
-const config = {
-  headers: {
-    Authorization: "Bearer " + getJwtToken(),
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-};
-
 // USER API
 export const getCurrentUser = async (user) => {
   try {
-    const user = await axios.get(
-      "http://localhost:5000/api/user/profile",
-      config
-    );
+    const user = await axios.get("http://localhost:5000/api/user/profile", {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     return user;
   } catch (err) {}
 };
@@ -70,7 +65,13 @@ export const CreateNewBoard = async (payload) => {
     let board = await axios.post(
       "http://localhost:5000/api/board/create",
       payload,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return board;
   } catch (err) {
@@ -90,16 +91,15 @@ export const CreateNewBoard = async (payload) => {
 
 export const getAllBoards = async (payload) => {
   try {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + getJwtToken(),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
     let board = await axios.get(
       `http://localhost:5000/api/board/${payload}/getAllBoards`,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return board;
   } catch (err) {}
@@ -111,7 +111,13 @@ export const addNewCard = async (payload) => {
     let card = await axios.post(
       `http://localhost:5000/api/board/card/create`,
       payload,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return card;
   } catch (err) {
@@ -124,7 +130,13 @@ export const addItemToCard = async (payload) => {
     let item = await axios.post(
       `http://localhost:5000/api/board/card/create`,
       payload,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return item;
   } catch (err) {
@@ -137,7 +149,13 @@ export const reOrderCardItems = async (payload) => {
     const boardCards = await axios.put(
       "http://localhost:5000/api/board/card/reorder",
       payload,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return boardCards;
   } catch (err) {}
@@ -155,7 +173,13 @@ export const getSpecificBoard = async (boardName) => {
     };
     let board = await axios.get(
       `http://localhost:5000/api/board/${boardName}`,
-      config
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
     return board;
   } catch (err) {
@@ -167,7 +191,13 @@ export const updateCardItems = async (payload) => {
   return await axios.patch(
     "http://localhost:5000/api/board/card/update",
     payload,
-    config
+    {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
   );
 };
 

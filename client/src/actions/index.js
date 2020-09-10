@@ -3,6 +3,10 @@ export const loginUser = (user) => ({
   type: USER.LOGIN_USER,
   payload: { ...user },
 });
+export const loginUserOauth = (user) => ({
+  type: USER.LOGIN_USER_OAUTH,
+  payload: { ...user },
+});
 export const setUser = (user) => ({
   type: USER.LOGIN_USER_SUCCESS,
   payload: user,

@@ -12,6 +12,10 @@ export const loginReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         ...state,
       });
+    case USER.LOGIN_USER_OAUTH:
+      return Object.assign({}, state, {
+        ...state,
+      });
     case USER.LOGIN_USER_SUCCESS:
       return Object.assign({}, state, {
         ...state,
