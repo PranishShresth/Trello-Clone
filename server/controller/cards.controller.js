@@ -34,6 +34,24 @@ module.exports = {
       console.error(err);
     }
   },
+  updateCardTitle: async function (req, res, next) {
+    try {
+      const { cardId, name } = req.body;
+      await Card.findByIdAndUpdate(
+        cardId,
+        {
+          name: name,
+        },
+        (err, result) => {
+          if (err) return res.status(400).json({ error: err.message });
+          return res.status(200).json(result);
+        }
+      );
+    } catch (err) {
+      if (err) return res.status(400).json({ error: err.message });
+    }
+  },
+
   reorderCards: async function (req, res, next) {
     try {
       const { id } = req.user;

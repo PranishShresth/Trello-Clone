@@ -13,15 +13,21 @@ import {
 } from "@material-ui/core";
 import "./TodoCard.css";
 import { Add, Close, Edit } from "@material-ui/icons";
+import { changeCardTitle } from "./../utils/api";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import UpdateOverlay from "./UpdateOverlay";
+import { connect } from "react-redux";
+import { setSpecificBoards } from "./../actions/index";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
 
-function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
+function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
   const [todo, setTodo] = useState("");
   const [toggleAddTodo, setToggleAddTodo] = useState(false);
+  const [cardTitle, setCardTitle] = useState(card.name);
+  const [renderCardTitle, setRenderCardTitle] = useState(false);
 
+  // edit cards
   const handleEditButton = (ev) => {
     var rect = ev.currentTarget.getBoundingClientRect();
     var x = ev.clientX;
@@ -38,6 +44,19 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
     });
     setOverlay(true);
   };
+
+  // card title submit
+  const handleCardTitleSubmit = async (ev) => {
+    if (ev.which === 13) {
+      ev.preventDefault();
+      const res = await changeCardTitle({ cardId: card._id, name: cardTitle });
+      setRenderCardTitle(false);
+      // if (res.status === 200) {
+      //   setBoard(res.data);
+      // }
+    }
+  };
+
   const handleItemInputChange = (ev) => {
     ev.persist();
     setTodo(ev.target.value);
@@ -88,15 +107,33 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
         width: "auto",
       }}
     >
-      <Typography
-        component="h2"
-        variant="h5"
-        style={{
-          padding: "5px 16px",
-        }}
-      >
-        {card.name}
-      </Typography>
+      {!renderCardTitle ? (
+        <Typography
+          component="h2"
+          variant="h5"
+          style={{
+            padding: "5px 16px",
+          }}
+          onDoubleClick={() => {
+            setRenderCardTitle(!renderCardTitle);
+          }}
+        >
+          {card.name}
+        </Typography>
+      ) : (
+        <form>
+          <TextField
+            onKeyPress={handleCardTitleSubmit}
+            fullWidth
+            label="Card Title"
+            value={cardTitle}
+            onChange={(ev) => {
+              setCardTitle(ev.target.value);
+            }}
+          />
+        </form>
+      )}
+
       <Droppable droppableId={`${card._id}`}>
         {(provided) => (
           <CardContent
@@ -200,4 +237,9 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay }) {
   );
 }
 
-export default TodoCard;
+const MapDispatchToProps = (dispatch) => ({
+  setBoard: (payload) => {
+    dispatch(setSpecificBoards(payload));
+  },
+});
+export default connect(null, MapDispatchToProps)(TodoCard);

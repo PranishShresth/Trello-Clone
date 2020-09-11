@@ -24,5 +24,6 @@ router.post("/board/card/create", auth, cardController.createCard);
 router.put("/board/card/reorder", auth, cardController.reorderCards);
 router.patch("/board/card/update", auth, cardController.updateCardItems);
 router.put("/board/card/items", auth, cardController.deleteItemFromCard);
+router.put("/board/card", auth, cardController.updateCardTitle);
 
 module.exports = router;

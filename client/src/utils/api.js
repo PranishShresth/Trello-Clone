@@ -105,6 +105,31 @@ export const getAllBoards = async (payload) => {
   } catch (err) {}
 };
 
+//when the component first mounts
+export const getSpecificBoard = async (boardName) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + getJwtToken(),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    let board = await axios.get(
+      `http://localhost:5000/api/board/${boardName}`,
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    return board;
+  } catch (err) {
+    console.error(err);
+  }
+};
 // CARD APIs
 export const addNewCard = async (payload) => {
   try {
@@ -161,32 +186,6 @@ export const reOrderCardItems = async (payload) => {
   } catch (err) {}
 };
 
-//when the component first mounts
-export const getSpecificBoard = async (boardName) => {
-  try {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + getJwtToken(),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-    let board = await axios.get(
-      `http://localhost:5000/api/board/${boardName}`,
-      {
-        headers: {
-          Authorization: "Bearer " + getJwtToken(),
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
-    return board;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const updateCardItems = async (payload) => {
   return await axios.patch(
     "http://localhost:5000/api/board/card/update",
@@ -213,4 +212,14 @@ export const deleteCardItems = async (payload) => {
       },
     }
   );
+};
+
+export const changeCardTitle = async (payload) => {
+  return await axios.put("http://localhost:5000/api/board/card", payload, {
+    headers: {
+      Authorization: "Bearer " + getJwtToken(),
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 };
