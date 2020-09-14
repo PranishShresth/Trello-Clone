@@ -69,7 +69,7 @@ const Profile = ({ login }) => {
                   <TextField
                     id="outlined-required"
                     label="Username"
-                    defaultValue={`${login.user.name}`}
+                    value={`${login.user.name}`}
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -82,7 +82,7 @@ const Profile = ({ login }) => {
                   <TextField
                     id="outlined-required"
                     label="Bio"
-                    defaultValue="Hello World"
+                    value={`${login.user.bio}`}
                     variant="outlined"
                     fullWidth
                     margin="normal"

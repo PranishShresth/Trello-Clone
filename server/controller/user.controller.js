@@ -11,6 +11,7 @@ module.exports = {
           _id: user._id,
           email: user.email,
           name: user.username,
+          bio: user.bio,
         },
       });
     } catch (err) {
@@ -77,7 +78,6 @@ module.exports = {
           token,
         });
       }
-      console.log;
       const user = new User({ username: name, password: "oauth", email });
       await user.save();
       res.setHeader("Content-Type", "application/json");
