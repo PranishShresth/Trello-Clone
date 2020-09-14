@@ -16,6 +16,9 @@ const userSchema = new Schema({
     unique: true,
     required: true,
   },
+  bio: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

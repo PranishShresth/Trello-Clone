@@ -60,11 +60,10 @@ const useStyles = makeStyles((theme) => ({
 function MainPage({ login, getAllBoards, boards, location }) {
   const { user } = useParams();
   const classes = useStyles();
-
   useEffect(() => {
     document.title = "Home | " + login.user.name;
     getAllBoards(user);
-  }, []);
+  }, [login.user.name]);
 
   return (
     <>

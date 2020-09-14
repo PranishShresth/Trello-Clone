@@ -113,6 +113,7 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
           variant="h5"
           style={{
             padding: "5px 16px",
+            cursor: "pointer",
           }}
           onDoubleClick={() => {
             setRenderCardTitle(!renderCardTitle);

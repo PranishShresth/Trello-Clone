@@ -70,7 +70,7 @@ function* Oauth(action) {
 }
 
 function* userSaga() {
-  // yield takeLatest(USER.LOGIN_USER, LoginUser);
+  yield takeLatest(USER.LOGIN_USER, LoginUser);
   yield takeLatest(USER.LOGIN_USER_OAUTH, Oauth);
   yield takeLatest(USER.FETCH_CURRENT_USER, fetchCurrentUser);
 }

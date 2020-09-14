@@ -7,6 +7,7 @@ import MainPage from "./pages/MainPage";
 import { fetchCurrentUser } from "./actions/index";
 import page404 from "./components/page404";
 import Boards from "./pages/Boards";
+import Profile from "./pages/Profile";
 import { connect } from "react-redux";
 import PrivateRoute from "./components/PrivateRoute";
 import { getCurrentUser } from "./utils/api";
@@ -30,6 +31,7 @@ function App({ currentUser, fetchCurrentUser }) {
       <Route exact path="/" component={Registration} />
       <Route exact path="/home/:user" component={MainPage} />
       <Route exact path="/boards/:boardName" component={Boards} />
+      <Route path="/profile" component={Profile} />
       <Route component={page404} />
     </Switch>
   );

@@ -126,7 +126,11 @@ function Header({ logOut, login }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <a href="/profile" style={{ textDecoration: "none", color: "black" }}>
+          Profile
+        </a>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem
         onClick={() => {
