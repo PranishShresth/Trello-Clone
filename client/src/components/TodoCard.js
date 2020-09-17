@@ -76,11 +76,7 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
         Accept: "application/json",
       },
     };
-    await axios.post(
-      `http://localhost:5000/api/board/card/items`,
-      payload,
-      config
-    );
+    await axios.post(`/api/board/card/items`, payload, config);
     await updateBoards();
     setTodo("");
   };
