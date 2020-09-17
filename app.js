@@ -1,4 +1,5 @@
 const express = require("express");
+const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -7,8 +8,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const app = express();
-
+app.listen(process.env.PORT || 5000, () => {
+  console.log("Server started at " + process.env.PORT);
+});
 //cors manual
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
