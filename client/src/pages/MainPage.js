@@ -61,7 +61,7 @@ function MainPage({ login, getAllBoards, boards, location }) {
   const { user } = useParams();
   const classes = useStyles();
   useEffect(() => {
-    document.title = "Home | " + login.user.name;
+    document.title = "Home | " + user;
     getAllBoards(user);
   }, [user]);
 
@@ -73,13 +73,13 @@ function MainPage({ login, getAllBoards, boards, location }) {
           <div className={classes.sideBar}>
             <ul>
               <li>
-                <NavLink to={`/home/${login.user.name}`}>
+                <NavLink to={`/home/${user}`}>
                   <Dashboard />
                   Boards
                 </NavLink>
               </li>
               <li>
-                <NavLink to={`/home/${login.user.name}`}>
+                <NavLink to={`/home/${user}`}>
                   <Home />
                   Home
                 </NavLink>
