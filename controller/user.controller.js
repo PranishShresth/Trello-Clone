@@ -73,10 +73,10 @@ module.exports = {
         await user.save();
         return res.status(200).send("Succesfull");
       } else {
-        return res.status(403).send("Damn");
+        return res.status(403).send("Something went wrong");
       }
     } catch (err) {
-      console.error(err);
+      if (err) return res.status(403).send({ msg: err.message });
     }
   },
 

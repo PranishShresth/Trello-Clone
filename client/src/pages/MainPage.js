@@ -63,7 +63,7 @@ function MainPage({ login, getAllBoards, boards, location }) {
   useEffect(() => {
     document.title = "Home | " + login.user.name;
     getAllBoards(user);
-  }, [login.user.name]);
+  }, [user]);
 
   return (
     <>
