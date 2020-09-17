@@ -59,6 +59,25 @@ export const RegisterUser = async (signupvalues) => {
   }
 };
 
+export const changeUserDetails = async (payload) => {
+  try {
+    const user = await axios.put(
+      "http://localhost:5000/api/user/details",
+      payload,
+      {
+        headers: {
+          Authorization: "Bearer " + getJwtToken(),
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // BOARD PAGE API
 export const CreateNewBoard = async (payload) => {
   try {

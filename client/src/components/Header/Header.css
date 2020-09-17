@@ -13,3 +13,15 @@ header nav {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+.information-img {
+  border: 0;
+  width: 336px;
+  height: 226px;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 2px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+}

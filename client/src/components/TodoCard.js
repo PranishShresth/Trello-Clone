@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { setSpecificBoards } from "./../actions/index";
 import axios from "axios";
 import getJwtToken from "../utils/jwt";
+import GreenButton from "../components/GreenButton";
 
 function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
   const [todo, setTodo] = useState("");
@@ -218,9 +219,13 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
                     onChange={handleItemInputChange}
                   />
                   <br />
-                  <Button type="submit" variant="contained" color="secondary">
+                  <GreenButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
                     Add
-                  </Button>
+                  </GreenButton>
                   <IconButton
                     onClick={() => {
                       setToggleAddTodo((prevState) => !prevState);

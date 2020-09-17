@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import decode from "jwt-decode";
 import { Switch, Route, BrowserRouter, useHistory } from "react-router-dom";
 import Registration from "./pages/Registration";
 import AppContainer from "./components/AppContainer";
@@ -12,21 +11,13 @@ import Profile from "./pages/Profile";
 import { connect } from "react-redux";
 import PrivateRoute from "./components/PrivateRoute";
 import { getCurrentUser } from "./utils/api";
+import { isTokenExpired } from "./utils/jwt";
+
 import Header from "./components/Header/Header";
 
 function App({ currentUser, fetchCurrentUser, logOut }) {
   const history = useHistory();
 
-  const isTokenExpired = (token) => {
-    try {
-      const decoded = decode(token);
-      if (decoded.exp < Date.now() / 1000) {
-        return true;
-      } else return false;
-    } catch (err) {
-      return false;
-    }
-  };
   useEffect(() => {
     const jwt = localStorage.getItem("jwt-token");
     if (jwt) {

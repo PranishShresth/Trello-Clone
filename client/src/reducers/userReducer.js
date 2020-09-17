@@ -16,6 +16,11 @@ export const loginReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         ...state,
       });
+    case USER.UPDATE_CURRENT_USER:
+      return Object.assign({}, state, {
+        ...state,
+        user: action.payload,
+      });
     case USER.LOGIN_USER_SUCCESS:
       return Object.assign({}, state, {
         ...state,

@@ -1,11 +1,13 @@
-import React from "react";
-import { TextField, Grid, Typography, Button } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Header from "../components/Header/Header";
+import GreenButton from "../components/GreenButton";
+import "./Profile.css";
+import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
-import { deepOrange, deepPurple, green } from "@material-ui/core/colors";
-import "./Profile.css";
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import { updateCurrentUser } from "../actions/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,18 +26,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
-    "&:hover": {
-      backgroundColor: green[700],
-    },
-  },
-}))(Button);
-
-const Profile = ({ login }) => {
+const Profile = ({ login, updateUser }) => {
   const classes = useStyles();
+  const [currentUser, setCurrentUser] = useState({
+    username: "",
+    bio: "",
+  });
+  useEffect(() => {
+    setCurrentUser({ username: login.user.name, bio: login.user.bio });
+  }, [login.user.name]);
+
+  const handleUpdateSubmit = (ev) => {
+    ev.preventDefault();
+    updateUser(currentUser);
+  };
   return (
     <>
       <Header />
@@ -64,12 +68,19 @@ const Profile = ({ login }) => {
             </Typography>
             <hr />
             <div className="profile-form-container">
-              <form>
+              <form onSubmit={handleUpdateSubmit}>
                 <div className="form-control">
                   <TextField
-                    id="outlined-required"
+                    id="username"
                     label="Username"
-                    value={`${login.user.name}`}
+                    value={`${currentUser.username}`}
+                    onChange={(ev) => {
+                      ev.persist();
+                      setCurrentUser((prev) => ({
+                        ...prev,
+                        username: ev.target.value,
+                      }));
+                    }}
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -80,9 +91,16 @@ const Profile = ({ login }) => {
                 </div>
                 <div className="form-control">
                   <TextField
-                    id="outlined-required"
+                    id="bio"
                     label="Bio"
-                    value={`${login.user.bio}`}
+                    value={`${currentUser.bio}`}
+                    onChange={(ev) => {
+                      ev.persist();
+                      setCurrentUser((prev) => ({
+                        ...prev,
+                        bio: ev.target.value,
+                      }));
+                    }}
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -92,14 +110,15 @@ const Profile = ({ login }) => {
                   />
                 </div>
                 <div className="form-control">
-                  <FormButton
+                  <GreenButton
+                    type="submit"
                     variant="contained"
                     color="primary"
                     style={{ color: "#fff" }}
                     fullWidth
                   >
                     Save
-                  </FormButton>
+                  </GreenButton>
                 </div>
               </form>
             </div>
@@ -113,4 +132,9 @@ const Profile = ({ login }) => {
 const mapStateToProps = ({ login }) => {
   return { login };
 };
-export default connect(mapStateToProps, null)(Profile);
+const mapDispatchToProps = (dispatch) => ({
+  updateUser: (payload) => {
+    dispatch(updateCurrentUser(payload));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

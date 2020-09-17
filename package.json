@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "concurrently \" nodemon bin/www\" \"cd.. && cd client && yarn start\""
+    "dev": "concurrently \" nodemon bin/www\" \"cd client && yarn start\""
   },
   "dependencies": {
     "concurrently": "^5.2.0",

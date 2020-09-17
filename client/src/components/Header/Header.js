@@ -10,6 +10,7 @@ import {
   Menu,
   Typography,
   IconButton,
+  Popover,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 
@@ -24,7 +25,7 @@ import {
 
 import { connect } from "react-redux";
 import { LogOutUser } from "../../actions/index";
-
+import "./Header.css";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -76,43 +77,33 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-  sectionMobile: {
     display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
   },
 }));
 
 function Header({ logOut, login }) {
   const classes = useStyles();
   const history = useHistory();
+
+  // Popover
+  const [anchorPopOverEl, setAnchorPopOverEl] = React.useState(null);
+
+  const open = Boolean(anchorPopOverEl);
+  const id = open ? "trello-popover" : undefined;
+  // popover end
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
+  const handleMenuClose = (ev) => {
+    console.log(ev.target.to);
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = "primary-search-account-menu";
@@ -126,10 +117,8 @@ function Header({ logOut, login }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <a href="/profile" style={{ textDecoration: "none", color: "black" }}>
-          Profile
-        </a>
+      <MenuItem onClick={handleMenuClose} name="profile">
+        Profile
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem
@@ -138,45 +127,6 @@ function Header({ logOut, login }) {
         }}
       >
         Log out
-      </MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary"></Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <Notifications />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -217,7 +167,13 @@ function Header({ logOut, login }) {
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Add />
             </IconButton>
-            <IconButton aria-label="info " color="inherit">
+            <IconButton
+              aria-label="info "
+              color="inherit"
+              onClick={(event) => {
+                setAnchorPopOverEl(event.currentTarget);
+              }}
+            >
               {/* <Badge badgeContent={17} color="secondary"> */}
               <Info />
               {/* </Badge> */}
@@ -233,20 +189,33 @@ function Header({ logOut, login }) {
               <AccountCircle />
             </IconButton>
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <More />
-            </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorPopOverEl}
+        onClose={() => {
+          setAnchorPopOverEl(null);
+        }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Typography style={{ textAlign: "center" }}>Information!</Typography>
+        <img
+          className="information-img"
+          src="https://a.trellocdn.com/prgb/dist/images/tips/info-image-02@1x.d554cbf6d240549b8ef0.png"
+          srcset="https://a.trellocdn.com/prgb/dist/images/tips/info-image-02@1x.d554cbf6d240549b8ef0.png 1x, https://a.trellocdn.com/prgb/dist/images/tips/info-image-02@2x.dc2ae20f9f00051bb6d4.png 2x"
+          alt=""
+          role="presentation"
+        ></img>
+      </Popover>
       {renderMenu}
     </div>
   );

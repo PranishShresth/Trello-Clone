@@ -21,6 +21,10 @@ export const fetchCurrentUser = () => ({
   type: USER.FETCH_CURRENT_USER,
 });
 
+export const updateCurrentUser = (payload) => ({
+  type: USER.UPDATE_CURRENT_USER,
+  payload: payload,
+});
 // export const RegisterUser = (user) => ({
 //   type: USER.REGISTER_USER,
 //   payload: { ...user },

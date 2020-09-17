@@ -20,7 +20,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+}
 app.use(cors());
 app.use("/api", routes);
 app.use(logger("dev"));
@@ -32,9 +34,7 @@ const mongooptions = {
   useFindAndModify: false,
 };
 
-mongoose.connect("mongodb://localhost:27017/Trello", mongooptions, function (
-  err
-) {
+mongoose.connect(process.env.MONGO_URI, mongooptions, function (err) {
   if (!err) {
     console.log("Mongo DB connected");
   }

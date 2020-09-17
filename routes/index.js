@@ -12,6 +12,7 @@ router.post("/user/login", userController.login);
 router.post("/user/register", userController.register);
 router.get("/user/profile", auth, userController.currentUser);
 router.post("/user/oauth", userController.oauth);
+router.put("/user/details", auth, userController.updateUserDetails);
 
 //boards
 router.post("/board/create", auth, boardsController.createBoard);

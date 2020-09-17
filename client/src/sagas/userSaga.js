@@ -1,10 +1,18 @@
-import { fork, call, put, takeLatest, delay } from "redux-saga/effects";
+import {
+  fork,
+  call,
+  put,
+  takeLatest,
+  delay,
+  takeEvery,
+} from "redux-saga/effects";
 import { push, replace } from "connected-react-router";
 import {
   fetchLoggedUser,
   RegisterUser,
   getCurrentUser,
   loginOauth,
+  changeUserDetails,
 } from "../utils/api";
 import {
   setUser,
@@ -46,6 +54,17 @@ function* LoginUser(action) {
     yield put(setUserError("Login Failed. Please Try Again"));
   }
 }
+
+function* updateUserDetails(action) {
+  try {
+    const { user, status } = yield call(changeUserDetails, action.payload);
+    if (status === 200) {
+      yield put(setUser(user));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 function* Oauth(action) {
   try {
     const { status, data } = yield call(loginOauth, action.payload);
@@ -72,6 +91,7 @@ function* Oauth(action) {
 function* userSaga() {
   yield takeLatest(USER.LOGIN_USER, LoginUser);
   yield takeLatest(USER.LOGIN_USER_OAUTH, Oauth);
+  yield takeEvery(USER.UPDATE_CURRENT_USER, updateUserDetails);
   yield takeLatest(USER.FETCH_CURRENT_USER, fetchCurrentUser);
 }
 

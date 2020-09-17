@@ -2,6 +2,27 @@ const User = require("./../models/user.model");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  updateUserDetails: async function (req, res, next) {
+    try {
+      const { id } = req.user;
+      await User.findByIdAndUpdate(
+        id,
+        { ...req.body },
+        { new: true },
+        function (err, user) {
+          if (!err)
+            return res.status(200).json({
+              _id: user._id,
+              email: user.email,
+              name: user.username,
+              bio: user.bio,
+            });
+        }
+      );
+    } catch (err) {
+      if (err) return res.status(401).json({ err: err.message });
+    }
+  },
   currentUser: async function (req, res, next) {
     try {
       const { id } = req.user;
@@ -32,6 +53,7 @@ module.exports = {
             _id: user._id,
             email: user.email,
             name: user.username,
+            bio: user.bio,
           },
           token,
         });
@@ -57,6 +79,7 @@ module.exports = {
       console.error(err);
     }
   },
+
   oauth: async function (req, res, next) {
     try {
       if (req.body === null) {
@@ -74,6 +97,7 @@ module.exports = {
             _id: userExist._id,
             email: userExist.email,
             name: userExist.username,
+            bio: userExist.bio,
           },
           token,
         });
@@ -89,6 +113,7 @@ module.exports = {
           _id: user._id,
           email: user.email,
           name: user.username,
+          bio: user.bio,
         },
         token,
       });
