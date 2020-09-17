@@ -22,16 +22,16 @@ app.listen(process.env.PORT || 5000, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
+app.use("/api", routes);
+app.use(logger("dev"));
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-app.use(cors());
-app.use("/api", routes);
-app.use(logger("dev"));
-
 const mongooptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
