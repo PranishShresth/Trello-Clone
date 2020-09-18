@@ -16,12 +16,13 @@ const history = createBrowserHistory();
 const store = createStore(
   rootReducer(history),
   compose(
-    applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__({
-        serialize: true,
-        trace: true,
-      })
+    applyMiddleware(sagaMiddleware, routerMiddleware(history))
+    //   window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    //     window.__REDUX_DEVTOOLS_EXTENSION__({
+    //       serialize: true,
+    //       trace: true,
+    //     })
+    // )
   )
 );
 
