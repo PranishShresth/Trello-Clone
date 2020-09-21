@@ -1,5 +1,6 @@
 const User = require("./../models/user.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 module.exports = {
   updateUserDetails: async function (req, res, next) {
@@ -43,7 +44,8 @@ module.exports = {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-      if (user.password === password) {
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
         res.setHeader("Content-Type", "application/json");
         let token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
           expiresIn: "1h",
@@ -69,11 +71,17 @@ module.exports = {
     try {
       const { username, email, password, confirmPassword } = req.body;
       if (password === confirmPassword) {
-        const user = new User({ username, password, email });
-        await user.save();
-        return res.status(200).send("Succesfull");
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, async function (err, hash) {
+          if (err) {
+            return res.status(403).send({ msg: err.message });
+          }
+          const user = new User({ username, password: hash, email });
+          await user.save();
+          return res.status(200).send("Succesfull");
+        });
       } else {
-        return res.status(403).send("Something went wrong");
+        return res.status(403).send("Password donot match");
       }
     } catch (err) {
       if (err) return res.status(403).send({ msg: err.message });

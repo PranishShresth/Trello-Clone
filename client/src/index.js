@@ -7,7 +7,6 @@ import rootReducer from "./reducers/rootReducer";
 import { Provider } from "react-redux";
 import rootSaga from "./sagas/rootSaga";
 import { createBrowserHistory } from "history";
-import { BrowserRouter as Router, BrowserRouter } from "react-router-dom";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 
 const sagaMiddleware = createSagaMiddleware();
