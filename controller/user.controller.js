@@ -78,7 +78,19 @@ module.exports = {
           }
           const user = new User({ username, password: hash, email });
           await user.save();
-          return res.status(200).send("Succesfull");
+          res.setHeader("Content-Type", "application/json");
+          let token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+            expiresIn: "1h",
+          });
+          return res.status(201).json({
+            user: {
+              _id: user._id,
+              email: user.email,
+              name: user.username,
+              bio: user.bio,
+            },
+            token,
+          });
         });
       } else {
         return res.status(403).send("Password donot match");

@@ -42,7 +42,7 @@ export const loginOauth = async (profile) => {
 export const RegisterUser = async (signupvalues) => {
   try {
     const user = await axios.post("/api/user/register", signupvalues);
-    return user.data;
+    return user;
   } catch (error) {
     console.error(error);
   }

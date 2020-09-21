@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Grid, Typography, TextField, Button, Box } from "@material-ui/core";
-import { RegisterUser } from "../utils/api.js";
+import { RegisterUser } from "../actions/index";
+import { connect } from "react-redux";
 
-function Signup() {
+function Signup({ RegisterNewUser }) {
   const [signup, setSignUp] = useState({
     username: "",
     password: "",
@@ -19,7 +20,7 @@ function Signup() {
 
   const handleFormSubmit = (ev) => {
     ev.preventDefault();
-    RegisterUser(signup);
+    RegisterNewUser(signup);
   };
   return (
     <Grid container>
@@ -113,9 +114,9 @@ function Signup() {
     </Grid>
   );
 }
-// const mapDispatchToProps = (dispatch) => ({
-//   RegisterUser: (payload) => {
-//     dispatch(RegisterUser(payload));
-//   },
-// });
-export default Signup;
+const mapDispatchToProps = (dispatch) => ({
+  RegisterNewUser: (payload) => {
+    dispatch(RegisterUser(payload));
+  },
+});
+export default connect(null, mapDispatchToProps)(Signup);

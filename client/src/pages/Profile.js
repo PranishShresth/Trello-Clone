@@ -32,6 +32,7 @@ const Profile = ({ login, updateUser }) => {
     username: "",
     bio: "",
   });
+
   useEffect(() => {
     setCurrentUser({ username: login.user.name, bio: login.user.bio });
   }, [login.user.name]);
@@ -40,14 +41,18 @@ const Profile = ({ login, updateUser }) => {
     ev.preventDefault();
     updateUser(currentUser);
   };
+  if (login.isLoading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <>
       <Header />
       <div className="profile-container">
         <div className="profile-header">
           <Avatar className={classes.purple}>
+            {/* /* {console.log(login.user)} */}
             {login.user.name && login.user.name[0]}
-            {login.user.name && login.user.name.split(" ")[1][0]}
+            {/* {login.user.name && login.user.name.split(" ")[1][0]} */}
           </Avatar>
           <Typography variant="h5" component="h3">
             {login.user.name}

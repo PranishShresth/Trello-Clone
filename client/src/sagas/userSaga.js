@@ -33,6 +33,26 @@ function* fetchCurrentUser(action) {
     console.log(err);
   }
 }
+
+function* RegisterNewUser(action) {
+  try {
+    const { data, status } = yield call(RegisterUser, action.payload);
+    switch (status) {
+      case 201:
+        localStorage.setItem("jwt-token", data.token);
+        yield put(setUser(data.user));
+        // yield put(push(`/home/${data.user.name}`));
+        break;
+      case 403:
+        yield put(setRegisterError("Password Donot Match"));
+        break;
+      default:
+        return status;
+    }
+  } catch (error) {
+    yield put(setRegisterError("Sign up failed. Please Try again"));
+  }
+}
 function* LoginUser(action) {
   try {
     const { data, status } = yield call(fetchLoggedUser, action.payload);
@@ -43,7 +63,7 @@ function* LoginUser(action) {
         // yield put(push(`/home/${data.user.name}`));
         break;
       case 403:
-        yield put(setUserError("Login Failed. Please Try Again"));
+        yield put(setRegisterError("Login Failed. Please Try Again"));
         break;
 
       default:
@@ -57,9 +77,10 @@ function* LoginUser(action) {
 
 function* updateUserDetails(action) {
   try {
-    const { user, status } = yield call(changeUserDetails, action.payload);
-    if (status === 200) {
-      yield put(setUser(user));
+    const resp = yield call(changeUserDetails, action.payload);
+    console.log(resp);
+    if (resp.status === 200) {
+      yield put(setUser(resp.data));
     }
   } catch (err) {
     console.log(err);
@@ -93,6 +114,7 @@ function* userSaga() {
   yield takeLatest(USER.LOGIN_USER_OAUTH, Oauth);
   yield takeEvery(USER.UPDATE_CURRENT_USER, updateUserDetails);
   yield takeLatest(USER.FETCH_CURRENT_USER, fetchCurrentUser);
+  yield takeLatest(USER.REGISTER_USER, RegisterNewUser);
 }
 
 export default userSaga;

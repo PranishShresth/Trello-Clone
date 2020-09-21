@@ -34,7 +34,7 @@ function App({ currentUser, fetchCurrentUser, logOut }) {
       <Route exact path="/home/:user" component={MainPage} />
       <Route exact path="/boards/:boardName" component={Boards} />
       <Route path="/profile" component={Profile} />
-      <Route component={page404} />
+      <Route path="*" component={page404} />
     </Switch>
   );
 }

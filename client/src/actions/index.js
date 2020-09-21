@@ -23,22 +23,23 @@ export const fetchCurrentUser = () => ({
 
 export const updateCurrentUser = (payload) => ({
   type: USER.UPDATE_CURRENT_USER,
-  payload: payload,
+  payload: { ...payload },
 });
-// export const RegisterUser = (user) => ({
-//   type: USER.REGISTER_USER,
-//   payload: { ...user },
-// });
 
-// export const setRegisterSuccess = (bool) => ({
-//   type: USER.REGISTER_USER_SUCCESS,
-//   success: bool,
-// });
+export const RegisterUser = (user) => ({
+  type: USER.REGISTER_USER,
+  payload: { ...user },
+});
 
-// export const setRegisterError = (bool) => ({
-//   type: USER.REGISTER_USER_ERROR,
-//   error: bool,
-// });
+export const setRegisterSuccess = (user) => ({
+  type: USER.REGISTER_USER_SUCCESS,
+  payload: { ...user },
+});
+
+export const setRegisterError = (error) => ({
+  type: USER.REGISTER_USER_ERROR,
+  payload: { ...error },
+});
 
 export const LogOutUser = () => ({
   type: USER.LOGOUT_USER,
