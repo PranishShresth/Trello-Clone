@@ -21,7 +21,6 @@ function* callGetAllBoards(action) {
 function* callGetOneBoard({ payload }) {
   try {
     const board = yield call(getSpecificBoard, payload);
-    console.log(board);
     yield put(setSpecificBoards(board.data));
   } catch (err) {
     console.log(err);

@@ -11,16 +11,21 @@ import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 
 const sagaMiddleware = createSagaMiddleware();
 const history = createBrowserHistory();
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+//     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+//       // options like actionSanitizer, stateSanitizer
+//     }) : compose;
 
 const store = createStore(
   rootReducer(history),
-  compose()
-  // applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-  // window.__REDUX_DEVTOOLS_EXTENSION__ &&
-  //   window.__REDUX_DEVTOOLS_EXTENSION__({
-  //     serialize: true,
-  //     trace: true,
-  //   })
+  compose(
+    applyMiddleware(sagaMiddleware, routerMiddleware(history))
+    //   window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    //     window.__REDUX_DEVTOOLS_EXTENSION__({
+    //       serialize: true,
+    //       trace: true,
+    //     })
+  )
 );
 
 sagaMiddleware.run(rootSaga);
