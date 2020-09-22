@@ -11,13 +11,11 @@ import {
   Button,
   Box,
 } from "@material-ui/core";
-import "rodal/lib/rodal.css";
 import "./TodoCard.css";
 import { Add, Close, Edit } from "@material-ui/icons";
 import { changeCardTitle } from "./../utils/api";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import UpdateOverlay from "./UpdateOverlay";
-import Rodal from "rodal";
 import { connect } from "react-redux";
 import { setSpecificBoards } from "./../actions/index";
 import axios from "axios";
@@ -45,9 +43,6 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
       cardId,
       itemId,
     });
-    // document.querySelector(
-    //   ".rodal-dialog"
-    // ).style.transform = `translate3d(${x}px,${y - 40}px,0)`;
 
     setOverlay(true);
   };
