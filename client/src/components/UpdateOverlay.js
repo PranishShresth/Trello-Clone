@@ -12,7 +12,6 @@ import { updateCardItems, deleteCardItems } from "../utils/api";
 import { green, red, pink } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 
-import "rodal/lib/rodal.css";
 import "./UpdateOverlay.css";
 
 const style = {
