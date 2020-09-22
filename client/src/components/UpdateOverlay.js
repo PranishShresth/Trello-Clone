@@ -1,11 +1,24 @@
-import React, { useState } from "react";
-import { TextareaAutosize, Button, IconButton } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import {
+  TextareaAutosize,
+  Button,
+  IconButton,
+  Modal,
+  Fade,
+  Backdrop,
+} from "@material-ui/core";
 import { Close, DeleteForever } from "@material-ui/icons";
 import { updateCardItems, deleteCardItems } from "../utils/api";
 import { green, red, pink } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+
+import "rodal/lib/rodal.css";
+import "./UpdateOverlay.css";
 
 const style = {
   textarea: {
+    width: 240,
+    height: 90,
     resize: "none",
     overflow: "hidden",
     borderImage: "none",
@@ -23,7 +36,19 @@ const style = {
     height: "calc(100% - 50px)",
     width: "100%",
   },
+  modal_body: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+  },
 };
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "none",
+    outline: "none",
+  },
+}));
 
 const UpdateOverlay = ({
   overlayVar,
@@ -31,7 +56,12 @@ const UpdateOverlay = ({
   overlay,
   getSpecificBoard,
 }) => {
+  //states
   const [value, setValue] = useState("");
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  //handler functions
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     await updateCardItems({ ...overlayVar, value });
@@ -47,66 +77,119 @@ const UpdateOverlay = ({
   };
 
   return (
-    <div className="update-overlay-container" style={style.container}>
-      <div
-        className="relative-container"
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.75)",
-          width: "100%",
-          height: "100%",
-          position: "relative",
+    <>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={overlay}
+        onClose={() => {
+          setOverlay(false);
         }}
-        // onClick={handleMousePos}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <div
-          className="update-overlay"
-          style={{
-            transform: `translate3d(${overlayVar.x}px,${
-              overlayVar.y - 40
-            }px,0)`,
-            position: "absolute",
-            zIndex: 30,
-            display: "flex",
-          }}
-        >
-          <form onSubmit={handleSubmit}>
-            <div className="textarea-container">
-              <TextareaAutosize
-                onChange={(ev) => {
-                  setValue(ev.target.value);
-                }}
-                value={value}
-                rowsMin={5}
-                rowsMax={7}
-                cols={30}
-                style={style.textarea}
-              />
-            </div>
-
-            <Button type="submit" color="secondary" variant="contained">
-              Save
-            </Button>
-          </form>
+        <Fade in={overlay}>
           <div
-            className="update_options"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{
+              transform: `translate3d(${0}px,${overlayVar.y - 250}px,0)`,
+              position: "absolute",
+              outline: "none",
+              border: "none",
+            }}
           >
-            <form onSubmit={handleDelete}>
-              <Button type="submit" color="secondary">
-                <DeleteForever style={{ color: red[500] }} />
+            <form onSubmit={handleSubmit}>
+              <div className="textarea-container">
+                <TextareaAutosize
+                  onChange={(ev) => {
+                    setValue(ev.target.value);
+                  }}
+                  value={value}
+                  style={style.textarea}
+                />
+              </div>
+
+              <Button type="submit" color="secondary" variant="contained">
+                Save
               </Button>
             </form>
-            <IconButton
-              onClick={() => {
-                setOverlay(!overlay);
-              }}
+            <div
+              className="update_options"
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              <Close style={{ color: red[500] }} />
-            </IconButton>
+              <form onSubmit={handleDelete}>
+                <Button type="submit" color="secondary">
+                  <DeleteForever style={{ color: red[500] }} />
+                </Button>
+              </form>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+      {/* <div className="update-overlay-container" style={style.container}>
+        <div
+          className="relative-container"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            width: "100%",
+            height: "100%",
+            position: "relative",
+          }}
+          // onClick={handleMousePos}
+        >
+          <div
+            className="update-overlay"
+            style={{
+              transform: `translate3d(${overlayVar.x}px,${
+                overlayVar.y - 40
+              }px,0)`,
+              position: "absolute",
+              zIndex: 30,
+              display: "flex",
+            }}
+          >
+            <form onSubmit={handleSubmit}>
+              <div className="textarea-container">
+                <TextareaAutosize
+                  onChange={(ev) => {
+                    setValue(ev.target.value);
+                  }}
+                  value={value}
+                  rowsMin={5}
+                  rowsMax={7}
+                  cols={30}
+                  style={style.textarea}
+                />
+              </div>
+
+              <Button type="submit" color="secondary" variant="contained">
+                Save
+              </Button>
+            </form>
+            <div
+              className="update_options"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <form onSubmit={handleDelete}>
+                <Button type="submit" color="secondary">
+                  <DeleteForever style={{ color: red[500] }} />
+                </Button>
+              </form>
+              <IconButton
+                onClick={() => {
+                  setOverlay(!overlay);
+                }}
+              >
+                <Close style={{ color: red[500] }} />
+              </IconButton>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div> */}
+    </>
   );
 };
 

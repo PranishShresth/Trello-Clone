@@ -11,11 +11,13 @@ import {
   Button,
   Box,
 } from "@material-ui/core";
+import "rodal/lib/rodal.css";
 import "./TodoCard.css";
 import { Add, Close, Edit } from "@material-ui/icons";
 import { changeCardTitle } from "./../utils/api";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import UpdateOverlay from "./UpdateOverlay";
+import Rodal from "rodal";
 import { connect } from "react-redux";
 import { setSpecificBoards } from "./../actions/index";
 import axios from "axios";
@@ -43,6 +45,10 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
       cardId,
       itemId,
     });
+    // document.querySelector(
+    //   ".rodal-dialog"
+    // ).style.transform = `translate3d(${x}px,${y - 40}px,0)`;
+
     setOverlay(true);
   };
 
@@ -97,145 +103,147 @@ function TodoCard({ card, updateBoards, overlayVar, setOverlay, setBoard }) {
   });
 
   return (
-    <Card
-      style={{
-        backgroundColor: "#ebecf0",
-        maxHeight: "600px",
-        width: "auto",
-      }}
-    >
-      {!renderCardTitle ? (
-        <Typography
-          component="h2"
-          variant="h5"
-          style={{
-            padding: "5px 16px",
-            cursor: "pointer",
-          }}
-          onDoubleClick={() => {
-            setRenderCardTitle(!renderCardTitle);
-          }}
-        >
-          {card.name}
-        </Typography>
-      ) : (
-        <form>
-          <TextField
-            onKeyPress={handleCardTitleSubmit}
-            fullWidth
-            label="Card Title"
-            value={cardTitle}
-            onChange={(ev) => {
-              setCardTitle(ev.target.value);
+    <>
+      <Card
+        style={{
+          backgroundColor: "#ebecf0",
+          maxHeight: "600px",
+          width: "auto",
+        }}
+      >
+        {!renderCardTitle ? (
+          <Typography
+            component="h2"
+            variant="h5"
+            style={{
+              padding: "5px 16px",
+              cursor: "pointer",
             }}
-          />
-        </form>
-      )}
-
-      <Droppable droppableId={`${card._id}`}>
-        {(provided) => (
-          <CardContent
-            {...provided.droppableProps}
-            innerRef={provided.innerRef}
-            className="todo-cards"
+            onDoubleClick={() => {
+              setRenderCardTitle(!renderCardTitle);
+            }}
           >
-            {card.items &&
-              card.items.map((item, i) => {
-                return (
-                  <Draggable
-                    draggableId={`${item._id}`}
-                    key={`${item._id}`}
-                    index={i}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                      >
-                        <Paper
-                          square
-                          variant="outlined"
-                          className="todo-card-item"
-                        >
-                          <Typography
-                            style={{
-                              overflowWrap: "break-word",
-                              overflow: "hidden",
-                            }}
-                            component="h5"
-                          >
-                            {item.item}
-                          </Typography>
-                          <IconButton
-                            id="iconButton"
-                            onClick={handleEditButton}
-                          >
-                            <Edit />
-                          </IconButton>
-                        </Paper>
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              })}
-            {provided.placeholder}
-            {!toggleAddTodo ? (
-              <div
-                className="card-composer"
-                onClick={() => {
-                  setToggleAddTodo((prevState) => !prevState);
-                }}
-                style={{
-                  backgroundColor: "transparent",
-                }}
-              >
-                <a href="#" className="card-composer-text">
-                  <span>
-                    <Add className="card-composer-icon" fontSize="large" />
-                  </span>
-                  <p> Add a todo </p>
-                </a>
-              </div>
-            ) : (
-              <Paper
-                style={{
-                  padding: 10,
-                }}
-              >
-                <form onSubmit={handleItemSubmit}>
-                  <TextField
-                    fullWidth
-                    label="Add new todo"
-                    value={todo}
-                    onChange={handleItemInputChange}
-                  />
-                  <br />
-                  <GreenButton
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Add
-                  </GreenButton>
-                  <IconButton
-                    onClick={() => {
-                      setToggleAddTodo((prevState) => !prevState);
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-                </form>
-              </Paper>
-            )}
-          </CardContent>
+            {card.name}
+          </Typography>
+        ) : (
+          <form>
+            <TextField
+              onKeyPress={handleCardTitleSubmit}
+              fullWidth
+              label="Card Title"
+              value={cardTitle}
+              onChange={(ev) => {
+                setCardTitle(ev.target.value);
+              }}
+            />
+          </form>
         )}
-      </Droppable>
-    </Card>
+
+        <Droppable droppableId={`${card._id}`}>
+          {(provided) => (
+            <CardContent
+              {...provided.droppableProps}
+              innerRef={provided.innerRef}
+              className="todo-cards"
+            >
+              {card.items &&
+                card.items.map((item, i) => {
+                  return (
+                    <Draggable
+                      draggableId={`${item._id}`}
+                      key={`${item._id}`}
+                      index={i}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          <Paper
+                            square
+                            variant="outlined"
+                            className="todo-card-item"
+                          >
+                            <Typography
+                              style={{
+                                overflowWrap: "break-word",
+                                overflow: "hidden",
+                              }}
+                              component="h5"
+                            >
+                              {item.item}
+                            </Typography>
+                            <IconButton
+                              id="iconButton"
+                              onClick={handleEditButton}
+                            >
+                              <Edit />
+                            </IconButton>
+                          </Paper>
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+              {provided.placeholder}
+              {!toggleAddTodo ? (
+                <div
+                  className="card-composer"
+                  onClick={() => {
+                    setToggleAddTodo((prevState) => !prevState);
+                  }}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <a href="#" className="card-composer-text">
+                    <span>
+                      <Add className="card-composer-icon" fontSize="large" />
+                    </span>
+                    <p> Add a todo </p>
+                  </a>
+                </div>
+              ) : (
+                <Paper
+                  style={{
+                    padding: 10,
+                  }}
+                >
+                  <form onSubmit={handleItemSubmit}>
+                    <TextField
+                      fullWidth
+                      label="Add new todo"
+                      value={todo}
+                      onChange={handleItemInputChange}
+                    />
+                    <br />
+                    <GreenButton
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Add
+                    </GreenButton>
+                    <IconButton
+                      onClick={() => {
+                        setToggleAddTodo((prevState) => !prevState);
+                      }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </form>
+                </Paper>
+              )}
+            </CardContent>
+          )}
+        </Droppable>
+      </Card>
+    </>
   );
 }
 

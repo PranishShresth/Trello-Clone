@@ -16,9 +16,16 @@ const useStyles = makeStyles((theme) => ({
       padding: "40px 0",
     },
   },
+  boardsContainer: {
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
+  },
   sideBar: {
     minWidth: "200px",
-
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
     "& ul": {
       listStyleType: "none",
       marginRight: "20px",
@@ -39,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   gridItems: {
     minHeight: "100px",
     minWidth: "200px",
+    margin: "10px 10px",
   },
   paper: {
     height: "100%",
@@ -86,7 +94,7 @@ function MainPage({ login, getAllBoards, boards, location }) {
               </li>
             </ul>
           </div>
-          <Grid container spacing={2}>
+          <Grid container spacing={0} className={classes.boardsContainer}>
             {boards.map((board) => {
               return (
                 <Grid
